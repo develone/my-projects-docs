@@ -1,0 +1,30 @@
+07/16/22
+
+fork of https://github.com/raspberrypi/pico-examples
+
+
+git clone git@github.com:develone/pico-examples.git
+
+commit a7ad17156bf60842ee55c8f86cd39e9cd7427c1d (HEAD -> master, tag: sdk-1.4.0, origin/master, origin/HEAD, ed-projects)
+Author: Brian Cooke <bdscooke@gmail.com>
+Date:   Fri Jul 1 15:01:37 2022 +0200
+
+    fix links to pico_w examples (#229)
+    
+    Fixes #228
+
+cd pico-examples
+
+mkdir build
+
+git clone  git@github.com:develone/pico-sdk.git
+
+cd pico-sdk/
+
+git submodule update --init
+ 
+export PICO_SDK_PATH=/home/devel/pico-examples/pico-sdk
+
+cmake ..
+
+make
