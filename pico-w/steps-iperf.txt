@@ -7,3 +7,7 @@ The pw_ssid.h needs to be added to picow_iperf.c
 In addition you need to modify the line in picow_ntp_client.c
  if (cyw43_arch_wifi_connect_timeout_ms(WIFI_SSID, WIFI_PASSWORD, CYW43_AUTH_WPA2_AES_PSK, 30000)) {
 with your WIFI_SSID --> "WIFI_SSID"
+
+I forked https://github.com/esnet/iperf and tested between two RPi4 
+/src/iperf3  -s the server
+./test_commands.sh RPi1 the client
