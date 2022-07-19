@@ -1,0 +1,9 @@
+Needed to create a file pw_ssid.h
+#ifndef _SSID_H
+#define _SSID_H
+char WIFI_PASSWORD[] = "WIFI_PASSWORD";
+#endif
+The pw_ssid.h needs to be added to picow_iperf.c
+In addition you need to modify the line in picow_ntp_client.c
+ if (cyw43_arch_wifi_connect_timeout_ms(WIFI_SSID, WIFI_PASSWORD, CYW43_AUTH_WPA2_AES_PSK, 30000)) {
+with your WIFI_SSID --> "WIFI_SSID"
