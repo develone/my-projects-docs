@@ -1,0 +1,85 @@
+ffmpeg -i file.wav -f s16le -acodec pcm_s16le file.pcm
+
+ffmpeg -f s16le -ar 44.1k -ac 2 -i file.pcm file.wav
+
+    -f s16le … signed 16-bit little endian samples
+    -ar 44.1k … sample rate 44.1kHz
+    -ac 2 … 2 channels (stereo)
+    -i file.pcm … input file
+    file.wav … output file
+
+ffmpeg -f s16le -ar 44.1k -ac 2 -i a2002011001-e02.pcm a2002011001-e02.wav
+a2002011001-e02.pcm
+
+ffmpeg -i filename.mp3 newfilename.wav
+
+ffmpeg -i Crash.mp3 Crash.wav
+ffmpeg -i Crash.wav -f s16le -acodec pcm_s16le Crash.pcm
+
+function PWMSoundClockStart(PWM:PPWMDevice;Frequency:LongWord):LongWord; 
+function PWMSoundStart(PWM:PPWMDevice):LongWord; 
+function PWMSoundSetFrequency(PWM:PPWMDevice;Frequency:LongWord):LongWord;
+function PWMSoundPlaySample(PWM:PPWMDevice;Data:Pointer;Size,ChannelCount,BitCount:LongWord):LongWord;
+function PWMSoundPlayFile(PWM:PPWMDevice;const Filename: String;ChannelCount,BitCount:LongWord):LongWord;
+
+
+https://gist.github.com/ghedo/963382/815c98d1ba0eda1b486eb9d80d9a91a81d995283
+sound_playback.c
+gcc -o play sound_playback.c -lasound
+
+./play 44100 2 360 < ~/Examples/20-PWMSound/Crash.pcm
+PCM name: 'default'
+PCM state: PREPARED
+channels: 2 (stereo)
+rate: 44100 bps
+seconds: 360
+/home/devel/Ultibo_Projects/FFT/doc/fft-tests
+./play 44100 2 30  < ../../../sd-card/a2002011001-e02.pcm
+./play 44100 2 30  < ../../../sd-card/a2002011001-e02.pcm.orig
+./play 44100 2 30  < ../../../sd-card/Crash.pcm.orig
+
+
+aplay -c 2 -r 44100 -f S16_LE -V type=stero sd-card/a2002011001-e02.pcm
+Playing raw data 'sd-card/a2002011001-e02.pcm' : Signed 16 bit Little Endian, Rate 44100 Hz, Stereo
+
+./play 44100 2 360 < ~/Examples/20-PWMSound/Crash.pcm 
+PCM name: 'default'
+PCM state: PREPARED
+channels: 2 (stereo)
+rate: 44100 bps
+seconds: 360
+frames: 444
+buff_size: 1776
+
+./play 44100 2 120 < ~/Examples/20-PWMSound/Crash.pcm 
+PCM name: 'default'
+PCM state: PREPARED
+channels: 2 (stereo)
+rate: 44100 bps
+seconds: 120
+frames: 444
+buff_size: 1776
+buff addr: 0x1373ed8
+
+git diff
+diff --git a/FFT/doc/fft-tests/sound_playback.c b/FFT/doc/fft-tests/sound_playback.c
+index 319cab0..3855b3f 100644
+--- a/FFT/doc/fft-tests/sound_playback.c
++++ b/FFT/doc/fft-tests/sound_playback.c
+@@ -95,10 +95,18 @@ int main(int argc, char **argv) {
+ 
+        /* Allocate buffer to hold single period */
+        snd_pcm_hw_params_get_period_size(params, &frames, 0);
+-
++       
++       printf("frames: %d\n", frames);
++       
+        buff_size = frames * channels * 2 /* 2 -> sample size */;
++       
++       printf("buff_size: %d\n", buff_size);
++       
++       
+        buff = (char *) malloc(buff_size);
+ 
++       printf("buff addr: 0x%x\n", buff);
+
