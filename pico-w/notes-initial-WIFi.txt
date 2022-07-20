@@ -1,0 +1,81 @@
+https://forums.raspberrypi.com/viewtopic.php?p=2016244&hilit=iperf+pico+w#p2016244
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/iperf/picow_iperf_server_background.elf verify reset exit"
+
+
+Ready, running iperf server at 192.168.1.159                                    
+Completed iperf transfer of 18 MBytes @ 15.0 Mbits/sec                          
+Total iperf megabytes since start 18 Mbytes 
+
+sudo apt install iperf
+
+iperf -c Picow27
+------------------------------------------------------------
+Client connecting to Picow27, TCP port 5001
+TCP window size: 43.8 KByte (default)
+------------------------------------------------------------
+[  3] local 192.168.1.211 port 54518 connected with 192.168.1.159 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3] 0.0000-10.0496 sec  18.0 MBytes  15.0 Mbits/sec
+../pico_w/iperf/pw_ssid.h
+../pico_w/ntp_client/pw_ssid.h
+../pico_w/tcp_client/pw_ssid.h
+../pico_w/tcp_server/pw_ssid.h
+
+Need to add the IP assigned by DHCP to /etc/hosts.
+xx.xx.xx.xx   Picow27
+xx.xx.xx.xx   Picow34
+
+export PICO_SDK_PATH=../../pico-sdk
+
+cmake ..
+
+make
+
+working new pico-w
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program hello_world/usb/hello_usb.elf verify reset exit"
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program hello_world/serial/hello_serial.elf verify reset exit"
+
+
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/wifi_scan/picow_wifi_scan_poll.elf verify reset exit"
+Performing wifi scan                                                            
+ssid: House                            rssi:  -71 chan:   4 mac: c4:41:1e:4e:c35
+ssid: House                            rssi:  -75 chan:   4 mac: c4:41:1e:4e:c35
+ssid: ATTtpHTfPi                       rssi:  -15 chan:   6 mac: cc:ab:2c:c7:5e5
+ssid: ATTtpHTfPi                       rssi:  -19 chan:   6 mac: cc:ab:2c:c7:5e5
+ssid: ATTtpHTfPi                       rssi:  -17 chan:   6 mac: cc:ab:2c:c7:5e5
+ssid: ATTtpHTfPi                       rssi:  -17 chan:   6 mac: cc:ab:2c:c7:5e5
+ssid: ATT47CJH5z_EXT                   rssi:  -80 chan:  11 mac: 3c:84:6a:46:987
+ssid: ATT47CJH5z_EXT                   rssi:  -76 chan:  11 mac: 3c:84:6a:46:987
+ssid: ATTtpHTfPi                       rssi:  -63 chan:   6 mac: cc:ab:2c:c7:5e5
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/ntp_client/picow_ntp_client_background.elf verify reset exit"
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/tcp_server/picow_tcpip_server_background.elf verify reset exit"
+Connecting to WiFi...                                                           
+Connected.                                                                      
+Starting server at 192.168.1.159 on port 4242
+
+
+Starting server on port 80 on uart
+
+
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/iperf/picow_iperf_server_background.elf verify reset exit"
+Connecting to WiFi...                                                           
+Connected.                                                                      
+                                                                                
+Ready, running iperf server at 192.168.1.159
+
+192.168.1.159 / PicoW on uart
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/iperf/picow_iperf_server_background.elf verify reset exit"
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/access_point/picow_access_point_poll.elf verify reset exit"
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program 2cores/multicore.elf verify reset exit"
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/ntp_client/serial/hello_serial.elf verify reset exit"
+
+not working new pico-w
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program blink/blink.elf verify reset exit"
