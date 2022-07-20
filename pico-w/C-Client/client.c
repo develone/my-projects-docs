@@ -22,12 +22,14 @@
 
     #define PORT 4242    /* the port client will be connecting to */
 
-    #define MAXDATASIZE 100 /* max number of bytes we can get at once */
+    #define MAXDATASIZE 2048 /* max number of bytes we can get at once */
 
     int main(int argc, char *argv[])
     {
-        int sockfd, numbytes;  
+        int sockfd, numbytes,TEST_ITERATIONS,i,nread,tread;
+        TEST_ITERATIONS = 10;  
         char buf[MAXDATASIZE];
+        char *ptrbuf;
         struct hostent *he;
         struct sockaddr_in their_addr; /* connector's address information */
 
@@ -56,22 +58,38 @@
             perror("connect");
             exit(1);
         }
-	while (1) {
-		if (send(sockfd, "Hello, world!\n", 14, 0) == -1){
+    for(i=0;i<10;i++) {
+        tread=0;
+        ptrbuf=&buf[0];
+        while(tread < MAXDATASIZE) {
+            nread=read(sockfd, ptrbuf, MAXDATASIZE);
+            printf("%d %d\n",nread,tread);
+            if(tread != MAXDATASIZE) {
+                 
+                ptrbuf=&buf[0] + nread;
+                nread=read(sockfd, ptrbuf, MAXDATASIZE);
+                tread=tread+nread;
+                printf("%d %d\n",nread,tread);
+                tread=2049;
+                 
+            }
+             
+ 
+             
+        }
+    //buf[2048]='\0';    
+    printf("%d\n",buf[2048]);        
+    //printf("%s\n",buf);
+    printf("After the read function %d \n",i);
+    
+    if (send(sockfd, buf, MAXDATASIZE,0) == -1){
                       perror("send");
 		      exit (1);
-		}
-		printf("After the send function \n");
-
-        	if ((numbytes=recv(sockfd, buf, MAXDATASIZE, 0)) == -1) {
-            		perror("recv");
-            		exit(1);
-		}	
-
-	        buf[numbytes] = '\0';
-
-        	printf("Received in pid=%d, text=: %s \n",getpid(), buf);
-		sleep(1);
+    }
+    
+        
+ 
+    sleep(10);
 
 	}
 
