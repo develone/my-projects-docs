@@ -1,0 +1,51 @@
+
+Running two shells on 2 two RPi4 4Gb with a pico-w connected to each. 
+
+
+    Need to create a pw_ssid.h
+    
+    char WIFI_PASSWORD[] = "Your WIFI_PASSWORD";
+    
+    Make the following changes in the files
+    pico_w/iperf/picow_iperf.c:
+    pico_w/ntp_client/picow_ntp_client.c:
+    pico_w/tcp_client/picow_tcp_client.c:
+    pico_w/tcp_server/picow_tcp_server.c: 
+
+	changes:
+
+	change 1:
+		 #include "pw_ssid.h"
+   
+    change 2:
+		if (cyw43_arch_wifi_connect_timeout_ms(Your WIFI_SSID, WIFI_PASSWORD, CYW43_AUTH_WPA2_AES_PSK, 30000)) {
+    
+
+    cmake -DTEST_TCP_SERVER_IP="xx.xx.xx.xx" ..
+    where xx.xx.xx.xx is the IP of the server
+    make
+
+1st shell first  RPi4 4Gb
+
+minicom on 1st shell first RPi4 4Gb /dev/ttyUSB0
+
+2nd shell on first RPi4 4Gb ~/pico-examples/build folder
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/tcp_server/picow_tcpip_server_background.elf verify reset exit
+
+results 1st shell minicom first RPi4 4Gb /dev/ttyUSB0
+
+https://github.com/develone/my-projects-docs/blob/master/pico-w/client-server/server.txt
+
+1st shell 2nd  RPi4 4Gb
+
+minicom on 1st shell 2nd RPi4 4Gb /dev/ttyUSB0
+
+2nd shell on 2nd RPi4 4Gb ~/pico-examples/build folder
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/tcp_client/picow_tcpip_client_background.elf verify reset exit"
+
+results 1st shell minicom 2nd RPi4 4Gb /dev/ttyUSB0
+
+https://github.com/develone/my-projects-docs/blob/master/pico-w/client-server/client.txt
+
