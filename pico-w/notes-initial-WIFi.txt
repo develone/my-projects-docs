@@ -54,6 +54,8 @@ ssid: ATTtpHTfPi                       rssi:  -63 chan:   6 mac: cc:ab:2c:c7:5e5
 
 openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/ntp_client/picow_ntp_client_background.elf verify reset exit"
 
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/tcp_client/picow_tcpip_client_background.elf verify reset exit"
+
 openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/tcp_server/picow_tcpip_server_background.elf verify reset exit"
 Connecting to WiFi...                                                           
 Connected.                                                                      

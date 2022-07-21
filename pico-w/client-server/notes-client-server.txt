@@ -3,8 +3,12 @@ Running two shells on 2 two RPi4 4Gb with a pico-w connected to each.
 
 
     Need to create a pw_ssid.h
-    
+
+#ifndef _SSID_H
+#define _SSID_H    
     char WIFI_PASSWORD[] = "Your WIFI_PASSWORD";
+#endif
+
     
     Make the following changes in the files
     pico_w/iperf/picow_iperf.c:
