@@ -1,5 +1,40 @@
 07/26/22 Testing pico_w with pico-sdk in home. 
- 
+When testing with cmake -DPICO_BOARD=pico_w ..
+This required chgs in OnEitherCore/main.c Standard/main.c Standard/main_blinky.c Standard/main_full.c
+
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/OnEitherCore/main.c: In function 'vApplicationTickHook':
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/OnEitherCore/main.c:382:29: error: 'PICO_DEFAULT_LED_PIN' undeclared (first use in this function); did you mean 'PICO_DEFAULT_SPI'?
+         gpio_xor_mask(1u << PICO_DEFAULT_LED_PIN);
+                             ^~~~~~~~~~~~~~~~~~~~
+                             PICO_DEFAULT_SPI
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/OnEitherCore/main.c:382:29: note: each undeclared identifier is reported only once for each function it appears in
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/OnEitherCore/main.c: In function 'prvSetupHardware':
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/OnEitherCore/main.c:455:15: error: 'PICO_DEFAULT_LED_PIN' undeclared (first use in this function); did you mean 'PICO_DEFAULT_SPI'?
+     gpio_init(PICO_DEFAULT_LED_PIN);
+               ^~~~~~~~~~~~~~~~~~~~
+               PICO_DEFAULT_SPI
+
+[ 58%] Building C object Standard/CMakeFiles/main_blinky.dir/main.c.obj
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/Standard/main.c: In function 'prvSetupHardware':
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/Standard/main.c:142:15: error: 'PICO_DEFAULT_LED_PIN' undeclared (first use in this function); did you mean 'PICO_DEFAULT_SPI'?
+     gpio_init(PICO_DEFAULT_LED_PIN);
+               ^~~~~~~~~~~~~~~~~~~~
+               PICO_DEFAULT_SPI
+[ 58%] Building C object Standard/CMakeFiles/main_blinky.dir/main_blinky.c.obj
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/Standard/main_blinky.c: In function 'prvQueueReceiveTask':
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/Standard/main_blinky.c:88:29: error: 'PICO_DEFAULT_LED_PIN' undeclared (first use in this function); did you mean 'PICO_DEFAULT_SPI'?
+ #define mainTASK_LED      ( PICO_DEFAULT_LED_PIN )
+                             ^~~~~~~~~~~~~~~~~~~~
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/Standard/main_blinky.c:189:25: note: in expansion of macro 'mainTASK_LED'
+    gpio_xor_mask( 1u << mainTASK_LED );
+                         ^~~~~~~~~~~~
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/Standard/main_blinky.c:88:29: note: each undeclared identifier is reported only once for each function it appears in
+ #define mainTASK_LED      ( PICO_DEFAULT_LED_PIN )
+                             ^~~~~~~~~~~~~~~~~~~~
+/home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/Standard/main_blinky.c:189:25: note: in expansion of macro 'mainTASK_LED'
+    gpio_xor_mask( 1u << mainTASK_LED );
+                         ^~~~~~~~~~~~
+
 This started with /home/devel/my-projects-docs/pico/rp2040-freertos-project/doc/freeRTOS-smp.txt
 
  1995  . Ultibo_Projects/picoultibo.sh 
