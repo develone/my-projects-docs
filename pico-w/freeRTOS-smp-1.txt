@@ -1,0 +1,71 @@
+07/26/22 Testing pico_w with pico-sdk in home. 
+ 
+This started with /home/devel/my-projects-docs/pico/rp2040-freertos-project/doc/freeRTOS-smp.txt
+
+ 1995  . Ultibo_Projects/picoultibo.sh 
+ 1996  export PICO_SDK_PATH=/home/devel/pico-sdk/
+ 1997  cd xx
+ 1998  rm -rf FreeRTOS-SMP-Demos/
+ 1999  git clone git@github.com:develone/FreeRTOS-SMP-Demos.git
+ 2000  cd FreeRTOS-SMP-Demos/
+ 2001  git clone git@github.com:develone/FreeRTOS-Kernel.git FreeRTOS/Source
+ 2002  cd FreeRTOS/Source/
+ 2003  git checkout -b smp
+ 2004  cd ../Demo/CORTEX_M0+_RP2040/
+ 2005  mkdir build
+ 2006  cd build/
+ 2007  cmake ..
+ 2008  make
+ 2009  ls
+ 2010  ls OnEitherCore/
+ 2011  openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program OnEitherCore/on_core_one.elf verify reset exit"
+ 
+Core 0: Busy work with mutex 35                                                 
+Core 0: Release SDK mutex                                                       
+Core 0: Starting SDK sleep                                                      
+Core 0: Finish SDK sleep; release SDK semaphore                                 
+Core 0: Acquire SDK mutex                                                       
+Core 0: Busy work with mutex 36                                                 
+Core 0: Busy work with mutex 37                                                 
+Core 0: Busy work with mutex 38                                                 
+Core 0: Busy work with mutex 39                                                 
+Core 0: Busy work with mutex 40                                                 
+Core 0: Busy work with mutex 41                                                 
+Core 0: Release SDK mutex                                                       
+Core 0: Starting SDK sleep                                                      
+Core 0: Finish SDK sleep; release SDK semaphore                                 
+Core 0: Acquire SDK mutex                                                       
+Core 0: Busy work with mutex 42                                                 
+Core 0: Busy work with mutex 43                                                 
+Core 0: Busy work with mutex 44                                                 
+Core 0: Busy work with mutex 45                                                 
+Core 0: Busy work with mutex 46                                                 
+Core 0: Busy work with mutex 47                                                 
+Core 0: Release SDK mutex                                                       
+Core 0: Starting SDK sleep
+
+2012  openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program OnEitherCore/on_core_zero.elf verify reset exit"
+
+Core 0 - Thread 'Sem': Semaphore taken 109                                      
+Core 0 - Thread 'Sem': Semaphore taken 110                                      
+Core 0 - Thread 'Sem': Semaphore taken 111                                      
+Core 0 - Thread 'Sem': Semaphore taken 112                                      
+Core 0 - Thread 'TX': Queue send 28                                             
+Core 0 - Thread 'Rx': Queue receive 28                                          
+Core 0 - Thread 'SDK Seamphore U': SDK Sem wait timeout (ok) after 250506 us    
+Core 0 - Thread 'Sem': Semaphore taken 113                                      
+Core 0 - Thread 'Sem': Semaphore taken 114                                      
+Core 0 - Thread 'Sem': Semaphore taken 115                                      
+Core 0 - Thread 'Sem': Semaphore taken 116                                      
+Core 0 - Thread 'TX': Queue send 29                                             
+Core 0 - Thread 'Rx': Queue receive 29                                          
+Core 0 - Thread 'Sem': Semaphore taken 117                                      
+Core 0 - Thread 'SDK Seamphore U': SDK Sem wait timeout (ok) after 250506 us    
+Core 0 - Thread 'Sem': Semaphore taken 118                                      
+Core 0 - Thread 'Sem': Semaphore taken 119                                      
+Core 0 - Thread 'Sem': Semaphore taken 120                                      
+Core 0 - Thread 'TX': Queue send 30                                             
+Core 0 - Thread 'Rx': Queue receive 30                                          
+Core 0 - Thread 'SDK Mutex Use': Sleep finished; SDK Mutex releasing 2          
+Core 0 - Thread 'SDK Mutex Use': SDK Mutex Entered, sleeping for a while 3      
+Core 0 - Thread 'Sem': Semaphore taken 121  
