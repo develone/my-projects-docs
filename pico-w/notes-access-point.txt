@@ -1,0 +1,35 @@
+https://www.linksys.com/us/r/resource-center/what-is-a-wifi-access-point/
+What is an Access Point?
+An access point is a device that creates a wireless local area network, or WLAN, 
+usually in an office or large building. An access point connects to a wired router, switch, or 
+hub via an Ethernet cable, and projects a Wi-Fi signal to a designated area. For example, 
+if you want to enable Wi-Fi access in your company's reception area but don’t have a router 
+within range, you can install an access point near the front desk and run an Ethernet 
+cable through the ceiling back to the server room.
+
+On pi4-27 which has a pico_w at PicoW27
+
+The following code is found pico-examples/pico_w/picow_access_point.c
+
+lines 130-135
+    const char *ap_name = "picow_test";
+#if 1
+    const char *password = "password";
+#else
+    const char *password = NULL;
+#endif
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/access_point/picow_access_point_poll.elf verify reset exit"
+
+Starting server on port 80
+
+On pi4-36 which has a pico_w at PicoW34
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/wifi_scan/picow_wifi_scan_poll.elf verify reset exit"
+
+ssid: picow_test                       rssi:  -27 chan:   3 mac: 28:cd:c1:01:357
+
+const char *ap_name = "picow_test"; --> const char *ap_name = "firstpicotested";
+make
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/access_point/picow_access_point_poll.elf verify reset exit"
+
+ssid: firstpicotested                  rssi:  -37 chan:   3 mac: 28:cd:c1:01:35:6e sec: 7 
