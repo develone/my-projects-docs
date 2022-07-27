@@ -2,6 +2,16 @@
 When testing with cmake -DPICO_BOARD=pico_w ..
 This required chgs in OnEitherCore/main.c Standard/main.c Standard/main_blinky.c Standard/main_full.c
 
+Created a new dev branch at github https://github.com/develone/FreeRTOS-SMP-Demos/tree/dev
+git clone git@github.com:develone/FreeRTOS-SMP-Demos.git -b dev
+2028  cd FreeRTOS-SMP-Demos
+ 2029  v
+ 2030  cd FreeRTOS/Source/
+ 2031  git checkout -b smp
+ 2032  cd ../Demo/CORTEX_M0+_RP2040/
+ 2033  mkdir build
+
+
 /home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/OnEitherCore/main.c: In function 'vApplicationTickHook':
 /home/devel/xx/FreeRTOS-SMP-Demos/FreeRTOS/Demo/CORTEX_M0+_RP2040/OnEitherCore/main.c:382:29: error: 'PICO_DEFAULT_LED_PIN' undeclared (first use in this function); did you mean 'PICO_DEFAULT_SPI'?
          gpio_xor_mask(1u << PICO_DEFAULT_LED_PIN);
