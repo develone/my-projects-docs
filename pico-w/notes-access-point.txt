@@ -33,3 +33,21 @@ make
 openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/access_point/picow_access_point_poll.elf verify reset exit"
 
 ssid: firstpicotested                  rssi:  -37 chan:   3 mac: 28:cd:c1:01:35:6e sec: 7 
+My network provider provides xx.xx.1.xx WIFI
+made the following changes to pico-examples/pico_w/picow_access_point.c
+     }
+-    const char *ap_name = "picow_test";
+-#if 1
+-    const char *password = "password";
+-#else
+-    const char *password = NULL;
+-#endif
++    const char *ap_name = "firstpicotested";
++       const char *password = "password";
++ 
+with the pico_w running 
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/access_point/picow_access_point_background.elf verify reset exit"
+I connected a RPi3B+ and a RPi4B 4Gb using 
+Starting server on port 80
+DHCPS: client connected: MAC=b8:27:eb:2a:e9:e7 IP=xx.xx.4.16
+DHCPS: client connected: MAC=dc:a6:32:09:35:24 IP=xx.xx.4.17
