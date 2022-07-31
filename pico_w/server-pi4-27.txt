@@ -1,0 +1,75 @@
+Connecting to WiFi...
+Connected.
+Starting server at 192.168.1.159 on port 4242
+Client connected
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+test success

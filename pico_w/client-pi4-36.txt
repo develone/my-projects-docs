@@ -1,0 +1,64 @@
+Connecting to WiFi...
+Connected.
+Connecting to 192.168.1.159 port 4242
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+Waiting for buffer from server
+recv 1460 err 0
+recv 588 err 0
+Writing 2048 bytes to server
+tcp_client_sent 1460
+tcp_client_sent 588
+test success
