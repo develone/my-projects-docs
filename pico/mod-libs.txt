@@ -1,0 +1,428 @@
+07/31/22
+testing pico-sdk 1.4.0 on rp2040-freertos-project.
+
+pico-sdk on same tree as rp2040-freertos-project
+
+crc
+crc.h  cvtutils.h  head-tail.h crc.c  cvtutils.c  head-tail.c
+
+crc16
+crc16.c  cvtutils.c  fs.c  head-tail.c  vi.c crc16.h  fs.h  head-tail.h  lfs.h  lfs_util.h  vi.h
+
+still need cvtutils.c fs.h  lfs.h  lfs_util.h  vi.h cvtutils.h cvtutils.c
+not of libs lifting klt cir-buf littlefs xmodem for test-read & test-read-crc16
+
+int asciiValueToBinary(int asciiInput)
+{
+        int res = 0, i = 1, rem;
+        
+        while (asciiInput > 0)
+        {
+                rem = asciiInput % 2;
+                res = res + (i * rem);
+                asciiInput = asciiInput / 2;
+                i = i * 10;
+        }
+
+        return(res);
+}
+
+Modifing lifting, crc-crc16, and klt to be an INTERFACE similar to xmodem littlefs.
+Adding new cir-buf.
+
+. Ultibo/picoultibo.sh
+
+https://cmake.org/cmake/help/latest/prop_tgt/INTERFACE_COMPILE_FEATURES.html
+
+INTERFACE_COMPILE_FEATURES
+
+New in version 3.1.
+
+List of public compile features requirements for a library.
+
+Targets may populate this property to publish the compile features required to compile against the headers for the target. The target_compile_features() command populates this property with values given to the PUBLIC and INTERFACE keywords. Projects may also get and set the property directly.
+
+When target dependencies are specified using target_link_libraries(), CMake will read this property from all target dependencies to determine the build properties of the consumer.
+
+Contents of INTERFACE_COMPILE_FEATURES may use "generator expressions" with the syntax $<...>. See the cmake-generator-expressions(7) manual for available expressions. See the cmake-buildsystem(7) -manual for more on defining buildsystem properties.
+
+See the cmake-compile-features(7) manual for information on compile features and a list of supported compilers.
+export PICO_SDK_PATH=~/xx/rp2040-freertos-project/pico-sdk
+
+cd xx
+
+git clone --recursive git@github.com:develone/rp2040-freertos-project.git -b dev
+
+cd rp2040-freertos-project
+
+git clone git@github.com:develone/pico-sdk.git
+
+cd pico-sdk
+
+git submodule update --init
+
+cd ..
+
+mkdir build
+
+cd build
+
+cmake PICO_BOARD=pico ..
+
+
+
+modified lifting/CMakeLists.txt
+
+
+
+At this point loaded test-read-crc16.uf2 & connected uart to USB.
+tested get between pico & RPi4.
+
+added lifting klt cir-buf littlefs to pico-examples/pico_w/CMakeLists.txt  
+	    	add_subdirectory(cir-buf)
+	    	add_subdirectory(littlefs)  
+        	add_subdirectory(lifting)
+            add_subdirectory(klt)
+
+added lifting klt cir-buf littlefs xmodem to pico-examples/pico_w/tcp_server/CMakeLists.txt 
+
+This is what shows up pico-examples/build/pico_w/tcp_server/picow_tcpip_server_background.elf.map
+
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/lifting/lifting-lib/lifting.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/lifting/lifting-lib/lifting.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/lifting/lifting-lib/lifting.c.obj
+ .text.singlelift
+                0x00000000       0xf8 CMakeFiles/picow_tcpip_server_background.dir/__/lifting/lifting-lib/lifting.c.obj
+ .text.ilift    0x00000000       0xf4 CMakeFiles/picow_tcpip_server_background.dir/__/lifting/lifting-lib/lifting.c.obj
+ .text.lifting  0x00000000      0x1e0 CMakeFiles/picow_tcpip_server_background.dir/__/lifting/lifting-lib/lifting.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/lifting/lifting-lib/lifting.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/lifting/lifting-lib/lifting.c.obj
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .text._quicksort
+                0x00000000      0x120 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .text._KLTSelectGoodFeatures
+                0x00000000      0x6e0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .text.KLTSelectGoodFeatures
+                0x00000000       0xac CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .text.KLTReplaceLostFeatures
+                0x00000000       0xc8 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .data.KLT_verbose
+                0x00000000        0x4 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .rodata.KLTReplaceLostFeatures.str1.4
+                0x00000000       0x5d CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .rodata.KLTSelectGoodFeatures.str1.4
+                0x00000000       0x80 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .rodata._KLTSelectGoodFeatures.str1.4
+                0x00000000      0x22a CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/selectGoodFeatures.c.obj
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .text._KLTCreatePyramid
+                0x00000000       0xc8 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .text._KLTFreePyramid
+                0x00000000       0x28 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .text._KLTComputePyramid
+                0x00000000      0x148 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .rodata._KLTComputePyramid.str1.4
+                0x00000000       0x4e CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .rodata._KLTCreatePyramid.str1.4
+                0x00000000       0x73 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/pyramid.c.obj
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .text._convolveSeparate
+                0x00000000      0x274 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .text._computeKernels.constprop.2
+                0x00000000      0x24c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .text._KLTToFloatImage
+                0x00000000       0x24 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .text._KLTGetKernelWidths
+                0x00000000       0x20 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .text._KLTComputeGradients
+                0x00000000       0xb0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .text._KLTComputeSmoothedImage
+                0x00000000      0x2c8 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .bss.gauss_kernel
+                0x00000000      0x120 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .bss.gaussderiv_kernel
+                0x00000000      0x120 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .data.sigma_last
+                0x00000000        0x4 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .rodata._computeKernels.constprop.2.str1.4
+                0x00000000       0x45 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/convolve.c.obj
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/error.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/error.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/error.c.obj
+ .text.KLTError
+                0x00000000       0x40 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/error.c.obj
+ .text.KLTWarning
+                0x00000000       0x4c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/error.c.obj
+ .rodata.KLTError.str1.4
+                0x00000000        0xc CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/error.c.obj
+ .rodata.KLTWarning.str1.4
+                0x00000000        0xe CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/error.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/error.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/error.c.obj
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTCreateFeatureList
+                0x00000000       0x34 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTCreateFeatureHistory
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTCreateFeatureTable
+                0x00000000       0xa0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTPrintTrackingContext
+                0x00000000       0x1c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTChangeTCPyramid
+                0x00000000      0x150 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTUpdateTCBorder
+                0x00000000      0x138 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTCreateTrackingContext
+                0x00000000       0x94 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTFreeTrackingContext
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTFreeFeatureList
+                0x00000000       0x48 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTFreeFeatureHistory
+                0x00000000        0x8 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTFreeFeatureTable
+                0x00000000       0x1c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTStopSequentialMode
+                0x00000000       0x24 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTCountRemainingFeatures
+                0x00000000       0x24 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text.KLTSetVerbosity
+                0x00000000        0x4 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .rodata.KLTChangeTCPyramid.str1.4
+                0x00000000      0x126 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .rodata.KLTCreateFeatureTable.str1.4
+                0x00000000       0x1e CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .rodata.KLTPrintTrackingContext.str1.4
+                0x00000000       0x27 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .rodata.KLTUpdateTCBorder.str1.4
+                0x00000000      0x11d CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt.c.obj
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .text._KLTComputeSmoothSigma
+                0x00000000       0x24 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .text._KLTCreateFloatImage
+                0x00000000       0x30 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .text._KLTFreeFloatImage
+                0x00000000        0x8 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .text._KLTPrintSubFloatImage
+                0x00000000       0xb0 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .text._KLTWriteFloatImageToPGM
+                0x00000000        0x4 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .text._KLTWriteAbsFloatImageToPGM
+                0x00000000        0x4 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .rodata._KLTCreateFloatImage.str1.4
+                0x00000000       0x26 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .rodata._KLTPrintSubFloatImage.str1.4
+                0x00000000        0x7 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/klt/klt-lib/klt_util.c.obj
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_traverse_filter
+                0x00000000       0x74 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_commit_size
+                0x00000000       0x1c CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_fs_size_count
+                0x00000000        0xc CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_init
+                0x00000000      0x104 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_bd_read.isra.21.part.22
+                0x00000000      0x174 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_ctz_traverse.part.23
+                0x00000000       0xd8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_ctz_traverse.part.23.constprop.40
+                0x00000000       0xf0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_fs_parent_match
+                0x00000000       0x60 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_find_match
+                0x00000000       0xe4 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_ctz_find.constprop.30
+                0x00000000      0x150 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_traverse
+                0x00000000      0x208 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_bd_flush
+                0x00000000      0x124 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_bd_prog.constprop.34
+                0x00000000       0xcc CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_commitprog
+                0x00000000      0x10c CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_commitattr
+                0x00000000      0x1e0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_commit_commit
+                0x00000000       0x14 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_fetchmatch
+                0x00000000      0x5b0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_fs_pred
+                0x00000000       0xb8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_getslice
+                0x00000000      0x1d0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_getslice.constprop.38
+                0x00000000      0x1bc CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_getslice.constprop.39
+                0x00000000      0x1bc CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_fs_rawtraverse.constprop.37
+                0x00000000      0x170 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_find
+                0x00000000      0x178 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_commitcrc
+                0x00000000      0x340 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_alloc
+                0x00000000      0x6a4 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_alloc.part.26
+                0x00000000       0x94 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_relocate
+                0x00000000      0x1ec CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_rawwrite
+                0x00000000      0x4c8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_flush
+                0x00000000      0x124 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_rawread
+                0x00000000      0x1fc CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_traverse.constprop.33
+                0x00000000      0xc80 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_compact
+                0x00000000     0x1168 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_commit
+                0x00000000      0xfc4 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_drop
+                0x00000000       0x74 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_fs_forceconsistency
+                0x00000000      0x2b4 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_rawopencfg
+                0x00000000      0x2e4 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_format
+                0x00000000      0x100 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_mount
+                0x00000000      0x298 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_unmount
+                0x00000000       0x40 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_remove
+                0x00000000      0x124 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_rename
+                0x00000000      0x3a8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_stat
+                0x00000000       0xb0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_getattr
+                0x00000000       0x94 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_setattr
+                0x00000000       0x7c CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_removeattr
+                0x00000000       0x70 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_open
+                0x00000000       0x14 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_opencfg
+                0x00000000       0x10 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_close
+                0x00000000       0xe8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_sync
+                0x00000000       0xac CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_read
+                0x00000000        0x8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_write
+                0x00000000        0x8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_seek
+                0x00000000       0x54 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_truncate
+                0x00000000      0x104 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_tell
+                0x00000000        0x4 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_rewind
+                0x00000000       0x24 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_file_size
+                0x00000000       0x18 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_mkdir
+                0x00000000      0x190 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_open
+                0x00000000       0x98 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_close
+                0x00000000       0x28 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_read
+                0x00000000      0x150 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_seek
+                0x00000000       0xe4 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_tell
+                0x00000000        0x4 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_dir_rewind
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_fs_size
+                0x00000000       0x18 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text.lfs_fs_traverse
+                0x00000000      0x1a8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata        0x00000000        0x8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.defaults.7114
+                0x00000000        0xc CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.lfs_alloc.str1.4
+                0x00000000       0x27 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.lfs_dir_compact.str1.4
+                0x00000000       0xe8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.lfs_dir_fetchmatch.str1.4
+                0x00000000       0x71 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.lfs_dir_find.str1.4
+                0x00000000        0x7 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.lfs_dir_read.str1.4
+                0x00000000        0x2 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.lfs_file_relocate.str1.4
+                0x00000000       0x23 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.lfs_format.str1.4
+                0x00000000        0x9 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.lfs_fs_forceconsistency.str1.4
+                0x00000000       0xa8 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .rodata.lfs_mount.str1.4
+                0x00000000       0xff CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs.c.obj
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs_util.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs_util.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs_util.c.obj
+ .text.lfs_crc  0x00000000       0x34 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs_util.c.obj
+ .rodata.rtable.5998
+                0x00000000       0x40 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs_util.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs_util.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/littlefs/module/lfs_util.c.obj
+ .text          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ .data          0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ .text.bump_head
+                0x00000000        0xc CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ .text.bump_tail
+                0x00000000        0xc CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ .text.dec_head
+                0x00000000        0xc CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ .text.dec_tail
+                0x00000000       0x24 CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ .rodata.dec_tail.str1.4
+                0x00000000       0x24 CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ .comment       0x00000000       0x52 CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ .ARM.attributes
+                0x00000000       0x2c CMakeFiles/picow_tcpip_server_background.dir/__/cir-buf/cir-buf-lib/head-tail.c.obj
+ 
+ 
+
+ 
