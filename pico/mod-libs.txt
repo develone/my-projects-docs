@@ -1,3 +1,148 @@
+08/03/22
+
+Found an example of creating a library for pico.
+
+https://github.com/LearnEmbeddedSystems/rp2040-freertos-project/blob/master/freertos/CMakeLists.txt
+set(PICO_SDK_FREERTOS_SOURCE FreeRTOS-Kernel)
+
+add_library(freertos
+    ${PICO_SDK_FREERTOS_SOURCE}/event_groups.c
+    ${PICO_SDK_FREERTOS_SOURCE}/list.c
+    ${PICO_SDK_FREERTOS_SOURCE}/queue.c
+    ${PICO_SDK_FREERTOS_SOURCE}/stream_buffer.c
+    ${PICO_SDK_FREERTOS_SOURCE}/tasks.c
+    ${PICO_SDK_FREERTOS_SOURCE}/timers.c
+    ${PICO_SDK_FREERTOS_SOURCE}/portable/MemMang/heap_3.c
+    ${PICO_SDK_FREERTOS_SOURCE}/portable/GCC/ARM_CM0/port.c
+)
+
+target_include_directories(freertos PUBLIC
+    .
+    ${PICO_SDK_FREERTOS_SOURCE}/include
+    ${PICO_SDK_FREERTOS_SOURCE}/portable/GCC/ARM_CM0
+)
+
+I used the above example to create 4 of my own libraries for the pico.
+
+./build/freertos/libfreertos.a
+./build/lifting/liblifting.a
+./build/klt/libklt.a
+./build/crc16/libcrc16.a
+./build/crc/libcrc.a
+
+.text.buildCRCTable
+                0x10014694       0x7c CMakeFiles/picow_tcpip_server_background.dir/__/crc_crc16/crc_crc16_lib/crc.c.obj
+                0x10014694                buildCRCTable
+.text.getCRC   0x10014710       0x28 CMakeFiles/picow_tcpip_server_background.dir/__/crc_crc16/crc_crc16_lib/crc.c.obj
+                0x10014710                getCRC
+ 
+Since then I found a example the does not create a *.a. It still works in other programs like 
+using a library.
+
+https://github.com/develone/pshell/blob/master/littlefs/CMakeLists.txt
+
+
+
+add_library(littlefs INTERFACE)
+target_include_directories(littlefs INTERFACE ${CMAKE_CURRENT_LIST_DIR}/module)
+target_sources(littlefs INTERFACE
+    ${CMAKE_CURRENT_LIST_DIR}/module/lfs.c
+    ${CMAKE_CURRENT_LIST_DIR}/module/lfs_util.c
+    ${CMAKE_CURRENT_LIST_DIR}/module/lfs.h
+    ${CMAKE_CURRENT_LIST_DIR}/module/lfs_util.h)
+
+picow_tcpip_server_background.elf.map
+has the following entries.
+
+.text.buildCRCTable
+                0x10014694       0x7c CMakeFiles/picow_tcpip_server_background.dir/__/crc_crc16/crc_crc16_lib/crc.c.obj
+                0x10014694                buildCRCTable
+.text.getCRC   0x10014710       0x28 CMakeFiles/picow_tcpip_server_background.dir/__/crc_crc16/crc_crc16_lib/crc.c.obj
+                0x10014710                getCRC
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/tcp_server/picow_tcpip_server_background.elf verify reset exit"
+
+Back from buildCRCTable 
+0xd3 0x1 0x2e 
+Connecting to WiFi...
+Connected.
+Starting server at 192.168.1.159 on port 4242
+
+When the client connects.
+
+Client connected
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client
+tcp_server_recv 1460/0 err 0
+tcp_server_recv 588/1460 err 0
+tcp_server_recv buffer ok
+Writing 2048 bytes to client
+tcp_server_sent 1460
+tcp_server_sent 588
+Waiting for buffer from client                                                  
+tcp_server_recv 1460/0 err 0                                                    
+tcp_server_recv 588/1460 err 0                                                  
+tcp_server_recv buffer ok                                                       
+Writing 2048 bytes to client                                                    
+tcp_server_sent 1460                                                            
+tcp_server_sent 588                                                             
+Waiting for buffer from client                                                  
+tcp_server_recv 1460/0 err 0                                                    
+tcp_server_recv 588/1460 err 0                                                  
+tcp_server_recv buffer ok                                                       
+Writing 2048 bytes to client                                                    
+tcp_server_sent 1460                                                            
+tcp_server_sent 588                                                             
+Waiting for buffer from client                                                  
+tcp_server_recv 1460/0 err 0                                                    
+tcp_server_recv 588/1460 err 0                                                  
+tcp_server_recv buffer ok                                                       
+Writing 2048 bytes to client                                                    
+tcp_server_sent 1460                                                            
+tcp_server_sent 588                                                             
+Waiting for buffer from client                                                  
+tcp_server_recv 1460/0 err 0                                                    
+tcp_server_recv 588/1460 err 0                                                  
+tcp_server_recv buffer ok                                                       
+Writing 2048 bytes to client                                                    
+tcp_server_sent 1460                                                            
+tcp_server_sent 588                                                             
+Waiting for buffer from client                                                  
+tcp_server_recv 1460/0 err 0                                                    
+tcp_server_recv 588/1460 err 0                                                  
+tcp_server_recv buffer ok                                                       
+Writing 2048 bytes to client                                                    
+tcp_server_sent 1460                                                            
+tcp_server_sent 588                                                             
+Waiting for buffer from client                                                  
+tcp_server_recv 1460/0 err 0                                                    
+tcp_server_recv 588/1460 err 0                                                  
+tcp_server_recv buffer ok                                                       
+Writing 2048 bytes to client                                                    
+tcp_server_sent 1460                                                            
+tcp_server_sent 588                                                             
+Waiting for buffer from client                                                  
+tcp_server_recv 1460/0 err 0                                                    
+tcp_server_recv 588/1460 err 0                                                  
+tcp_server_recv buffer ok                                                       
+Writing 2048 bytes to client                                                    
+tcp_server_sent 1460                                                            
+tcp_server_sent 588                                                             
+Waiting for buffer from client                                                  
+tcp_server_recv 1460/0 err 0                                                    
+tcp_server_recv 588/1460 err 0                                                  
+tcp_server_recv buffer ok                                                       
+test success 
+
 08/01/22
 Added the following 2 lines:
 git diff ../CMakeLists.txt

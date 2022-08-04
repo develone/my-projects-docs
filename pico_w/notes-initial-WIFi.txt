@@ -1,3 +1,32 @@
+08/04/22
+Now pico-examples creates 130 examples.
+
+find . -name *.elf | wc
+    130     130    5960
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/freertos/ping/picow_freertos_ping_nosys.elf verify reset exit"
+Starting FreeRTOS on core 0:                                                    
+Connecting to WiFi...                                                           
+Connected.
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/freertos/ping/picow_freertos_ping_sys.elf verify reset exit"
+Starting FreeRTOS on core 0:
+Connecting to WiFi...
+Connected.
+
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/freertos/iperf/picow_freertos_iperf_server_nosys.elf verify reset exit"
+
+Starting FreeRTOS on core 0:
+Connecting to WiFi...
+Connected.
+
+Ready, running iperf server at 192.168.1.159
+blink_task starts
+Completed iperf transfer of 17 MBytes @ 14.7 Mbits/sec
+Total iperf megabytes since start 17 Mbytes
+
+ openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program pico_w/tcp_client/picow_tcpip_client_background.elf verify reset exit"
+
 07/29/22
 . Ultibo_Projects/picoultibo.sh
 pico-sdk on same tree as pico-examples.
