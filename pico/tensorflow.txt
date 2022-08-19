@@ -1,0 +1,504 @@
+Rebuilding on pi4-36 08/19/22
+
+sudo mksquashfs pico-tflmicro pico-tflmicro-pi4-27-4bbd8f-081622.img
+
+sudo unsquashfs -d pico-tflmicro pico-tflmicro-pi4-27-4bbd8f-081622.img
+
+cd pico-tflmicro
+
+rm -rf build
+
+mkdir build
+
+cd build
+
+export PICO_SDK_PATH=../pico-sdk/
+
+cmake -DPICO_BOARD=pico ..
+
+make
+
+237 - What is Tensorflow Lite and how to convert keras model to tflite?
+https://www.youtube.com/watch?app=desktop&v=HXzz87WVm6c
+https://github.com/bnsreenu/python_for_microscopists
+
+Dr. Sreenivas Bhattiprolu
+
+keras
+Watch "Keras with TensorFlow Course - Python Deep Learning and Neural Networks for Beginners Tutorial" on YouTube
+
+https://youtu.be/qFJeN9V1ZsI
+
+
+Watch "TensorFlow 2.0 Complete Course - Python Neural Networks for Beginners Tutorial" on YouTube
+https://www.youtube.com/watch?v=tPYj3fFJGjk
+
+
+cmake_minimum_required(VERSION 3.12)
+
+project(hello_world C CXX ASM)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
+
+
+add_executable(hello_world_test "")
+
+target_include_directories(hello_world_test
+  PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/.
+)
+
+set_target_properties(
+  hello_world_test
+  PROPERTIES
+  COMPILE_FLAGS -fno-rtti
+  COMPILE_FLAGS -fno-exceptions
+  COMPILE_FLAGS -fno-threadsafe-statics
+  COMPILE_FLAGS -nostdlib
+)
+
+target_sources(hello_world_test
+  PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/hello_world_test.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/model.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/model.h
+)
+
+target_link_libraries(
+  hello_world_test
+  pico-tflmicro
+  hardware_pwm
+  pico-tflmicro_test
+)
+
+pico_add_extra_outputs(hello_world_test)
+
+
+add_executable(hello_world "")
+
+target_include_directories(hello_world
+  PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/.
+)
+
+set_target_properties(
+  hello_world
+  PROPERTIES
+  COMPILE_FLAGS -fno-rtti
+  COMPILE_FLAGS -fno-exceptions
+  COMPILE_FLAGS -fno-threadsafe-statics
+  COMPILE_FLAGS -nostdlib
+)
+
+target_sources(hello_world
+  PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/constants.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/main.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/main_functions.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/model.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/rp2/output_handler.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/constants.h
+  ${CMAKE_CURRENT_LIST_DIR}/main_functions.h
+  ${CMAKE_CURRENT_LIST_DIR}/model.h
+  ${CMAKE_CURRENT_LIST_DIR}/output_handler.h
+)
+
+target_link_libraries(
+  hello_world
+  pico-tflmicro
+  hardware_pwm
+)
+
+pico_add_extra_outputs(hello_world)
+
+
+add_executable(output_handler_test "")
+
+target_include_directories(output_handler_test
+  PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/.
+)
+
+set_target_properties(
+  output_handler_test
+  PROPERTIES
+  COMPILE_FLAGS -fno-rtti
+  COMPILE_FLAGS -fno-exceptions
+  COMPILE_FLAGS -fno-threadsafe-statics
+  COMPILE_FLAGS -nostdlib
+)
+
+target_sources(output_handler_test
+  PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/output_handler_test.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/rp2/output_handler.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/constants.h
+  ${CMAKE_CURRENT_LIST_DIR}/output_handler.h
+)
+
+target_link_libraries(
+  output_handler_test
+  pico-tflmicro
+  hardware_pwm
+  pico-tflmicro_test
+)
+
+pico_add_extra_outputs(output_handler_test)
+
+
+	constants.cpp
+	hello_world_test.cpp
+	main.cpp
+	main_functions.cpp
+	model.cpp	xxd -i model.tflite > model.cc
+	output_handler_test.cpp
+
+micro_features_generator_test.uf2
+
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0
+
+Press CTRL-A Z for help on special keys
+
+Testing TestMicroFeaturesGeneratorYes
+Testing TestMicroFeaturesGeneratorNo
+2/2 tests passed
+~~~ALL TESTS PASSED~~~
+
+audio_provider_mock_test.uf2
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 18:12:14
+
+Press CTRL-A Z for help on special keys
+
+Testing TestAudioProviderMock
+1/1 tests passed
+~~~ALL TESTS PASSED~~~
+
+audio_provider_test.uf2
+
+
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 18:12:14
+
+Press CTRL-A Z for help on special keys
+
+Testing TestAudioProvider
+Testing TestTimer
+2/2 tests passed
+~~~ALL TESTS PASSED~~~
+
+command_responder_test.uf2
+
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0
+
+Press CTRL-A Z for help on special keys
+
+Testing TestCallability
+Heard foo (0) @0ms
+1/1 tests passed
+~~~ALL TESTS PASSED~~~
+
+Feeling pretty good right now.  I took my repo https://github.com/develone/pico-tflmicro
+which was crashing after 3% of compiling to 100% compiling.
+A simple change made the difference. The change in the toplevel CMakeLists.txt was 
+the fix.  
+
+
+[  3%] Linking CXX executable output_handler_test.elf
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj: in function `main':
+util_test.cpp:(.text.startup.main+0x0): multiple definition of `main'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:output_handler_test.cpp:(.text.startup.main+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj:(.bss._ZN10micro_test8reporterE+0x0): multiple definition of `micro_test::reporter'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:(.bss._ZN10micro_test8reporterE+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj:(.bss._ZN10micro_test13did_test_failE+0x0): multiple definition of `micro_test::did_test_fail'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:(.bss._ZN10micro_test13did_test_failE+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj:(.bss._ZN10micro_test16is_test_completeE+0x0): multiple definition of `micro_test::is_test_complete'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:(.bss._ZN10micro_test16is_test_completeE+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj:(.bss._ZN10micro_test12tests_failedE+0x0): multiple definition of `micro_test::tests_failed'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:(.bss._ZN10micro_test12tests_failedE+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/ut
+
+[ 99%] Building C object tests/testing_helpers_test/CMakeFiles/testing_helpers_test.dir/__/__/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+[ 99%] Building CXX object tests/testing_helpers_test/CMakeFiles/testing_helpers_test.dir/__/__/src/tensorflow/lite/micro/benchmarks/keyword_scrambled_model_data.cpp.obj
+[100%] Linking CXX executable testing_helpers_test.elf
+[100%] Built target testing_helpers_test
+
+A tensor is a container which can house data in N dimensions. Often and erroneously used interchangeably 
+with the matrix (which is specifically a 2-dimensional tensor), tensors are generalizations of matrices 
+to N-dimensional space. Mathematically speaking, tensors are more than simply a data container, however.
+
+commit 6ff6387ed1fb3b721b0996583c4af8872980833b (HEAD -> dev, origin/main, origin/dev, origin/HEAD)
+Merge: fbfff01 486abba
+Author: Alasdair Allan <alasdair@raspberrypi.com>
+Date:   Tue Feb 23 09:00:00 2021 +0000
+
+    Merge pull request #3 from raspberrypi/fix_hello_world_example
+    
+    Update hello_world example so it compiles with the latest SDK 
+
+commit 2e6142b15b8a75c1227dd3edbe839193b2bf9041 (HEAD -> master, origin/master, origin/HEAD)
+Author: graham sanderson <graham.sanderson@raspberrypi.com>
+Date:   Wed Jun 29 22:56:27 2022 -0500
+
+    SDK 1.4.0 release
+
+08/16/22
+git clone git@github.com:develone/pico-tflmicro.git -b dev
+
+cd pico-tflmicro
+
+git clone git@github.com:develone/pico-sdk.git
+
+cd pico-sdk/
+
+git submodule update --init
+
+cd ../
+
+mkdir build
+
+cd build
+
+export PICO_SDK_PATH=../pico-sdk/
+
+cmake -DPICO_BOARD=pico ..
+Using PICO_SDK_PATH from environment ('../pico-sdk/')
+PICO_SDK_PATH is /home/devel/xx/pico-tflmicro/pico-sdk
+Defaulting PICO_PLATFORM to rp2040 since not specified.
+Defaulting PICO platform compiler to pico_arm_gcc since not specified.
+-- Defaulting build type to 'Release' since not specified.
+PICO compiler is pico_arm_gcc
+-- The C compiler identification is GNU 8.3.1
+-- The CXX compiler identification is GNU 8.3.1
+-- The ASM compiler identification is GNU
+-- Found assembler: /usr/bin/arm-none-eabi-gcc
+Build type is Release
+PICO target board is pico.
+Using board configuration from /home/devel/xx/pico-tflmicro/pico-sdk/src/boards/include/boards/pico.h
+-- Found Python3: /usr/bin/python3.9 (found version "3.9.2") found components: Interpreter 
+TinyUSB available at /home/devel/xx/pico-tflmicro/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040; enabling build support for USB.
+cyw43-driver available at /home/devel/xx/pico-tflmicro/pico-sdk/lib/cyw43-driver
+lwIP available at /home/devel/xx/pico-tflmicro/pico-sdk/lib/lwip
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/devel/xx/pico-tflmicro/build
+
+make
+
+[  3%] Linking CXX executable output_handler_test.elf
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj: in function `main':
+util_test.cpp:(.text.startup.main+0x0): multiple definition of `main'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:output_handler_test.cpp:(.text.startup.main+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj:(.bss._ZN10micro_test8reporterE+0x0): multiple definition of `micro_test::reporter'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:(.bss._ZN10micro_test8reporterE+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj:(.bss._ZN10micro_test13did_test_failE+0x0): multiple definition of `micro_test::did_test_fail'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:(.bss._ZN10micro_test13did_test_failE+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj:(.bss._ZN10micro_test16is_test_completeE+0x0): multiple definition of `micro_test::is_test_complete'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:(.bss._ZN10micro_test16is_test_completeE+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj:(.bss._ZN10micro_test12tests_failedE+0x0): multiple definition of `micro_test::tests_failed'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:(.bss._ZN10micro_test12tests_failedE+0x0): first defined here
+/usr/lib/gcc/arm-none-eabi/8.3.1/../../../arm-none-eabi/bin/ld: CMakeFiles/output_handler_test.dir/__/__/src/tensorflow/lite/micro/testing/util_test.cpp.obj:(.bss._ZN10micro_test12tests_passedE+0x0): multiple definition of `micro_test::tests_passed'; CMakeFiles/output_handler_test.dir/output_handler_test.cpp.obj:(.bss._ZN10micro_test12tests_passedE+0x0): first defined here
+collect2: error: ld returned 1 exit status
+make[2]: *** [examples/hello_world/CMakeFiles/output_handler_test.dir/build.make:2793: examples/hello_world/output_handler_test.elf] Error 1
+make[1]: *** [CMakeFiles/Makefile2:3192: examples/hello_world/CMakeFiles/output_handler_test.dir/all] Error 2
+make: *** [Makefile:103: all] Error 2
+
+
+two libs get created.
+
+ls -la *.a
+-rw-r--r-- 1 devel devel 1072296 Aug 15 09:21 libpico-tflmicro.a
+-rw-r--r-- 1 devel devel  272188 Aug 15 09:18 libpico-tflmicro_test.a
+
+-rw-r--r-- 1 devel devel 1311320 Aug 15 09:25 keyword_benchmark.dis
+-rw-r--r-- 1 devel devel  689205 Aug 15 09:25 keyword_benchmark.elf.map
+-rw-r--r-- 1 devel devel  209920 Aug 15 09:25 keyword_benchmark.uf2
+
+
+minicom myusb0
+
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 20:33:17
+
+Press CTRL-A Z for help on special keys
+
+InitializeKeywordRunner() took 3642 ticks (3 ms)
+KeywordRunNIerations(1) took 7522 ticks (7 ms)
+KeywordRunNIerations(10) took 70135 ticks (70 ms)
+
+made the following chgs to the toplevel CMakeLists.txt file
+-  ${CMAKE_CURRENT_LIST_DIR}/src/tensorflow/lite/micro/testing/util_test.cpp
++  #${CMAKE_CURRENT_LIST_DIR}/src/tensorflow/lite/micro/testing/util_test.cpp
+ls -la build/examples/hello_world/
+total 22528
+drwxr-xr-x 3 devel devel    4096 Aug 16 05:40 .
+drwxr-xr-x 7 devel devel    4096 Aug 15 09:17 ..
+drwxr-xr-x 5 devel devel    4096 Aug 16 05:34 CMakeFiles
+-rw-r--r-- 1 devel devel    1144 Aug 15 09:17 cmake_install.cmake
+-rwxr-xr-x 1 devel devel  317824 Aug 16 05:37 hello_world.bin
+-rw-r--r-- 1 devel devel 7380330 Aug 16 05:37 hello_world.dis
+-rwxr-xr-x 1 devel devel  714348 Aug 16 05:37 hello_world.elf
+-rw-r--r-- 1 devel devel  724383 Aug 16 05:37 hello_world.elf.map
+-rw-r--r-- 1 devel devel  894025 Aug 16 05:37 hello_world.hex
+-rwxr-xr-x 1 devel devel  308784 Aug 16 05:40 hello_world_test.bin
+-rw-r--r-- 1 devel devel 7203426 Aug 16 05:40 hello_world_test.dis
+-rwxr-xr-x 1 devel devel  547536 Aug 16 05:40 hello_world_test.elf
+-rw-r--r-- 1 devel devel  721797 Aug 16 05:40 hello_world_test.elf.map
+-rw-r--r-- 1 devel devel  868613 Aug 16 05:40 hello_world_test.hex
+-rw-r--r-- 1 devel devel  617984 Aug 16 05:40 hello_world_test.uf2
+-rw-r--r-- 1 devel devel  635904 Aug 16 05:37 hello_world.uf2
+-rw-r--r-- 1 devel devel  678122 Aug 16 05:34 Makefile
+-rwxr-xr-x 1 devel devel   26492 Aug 16 05:34 output_handler_test.bin
+-rw-r--r-- 1 devel devel  453709 Aug 16 05:34 output_handler_test.dis
+-rwxr-xr-x 1 devel devel  121272 Aug 16 05:34 output_handler_test.elf
+-rw-r--r-- 1 devel devel  672892 Aug 16 05:34 output_handler_test.elf.map
+-rw-r--r-- 1 devel devel   74589 Aug 16 05:34 output_handler_test.hex
+-rw-r--r-- 1 devel devel   53248 Aug 16 05:34 output_handler_test.uf2
+
+-rw-r--r-- 1 devel devel  635904 Aug 16 05:37 hello_world.uf2
+127
+
+175
+
+198
+
+234
+
+250
+
+260
+
+249
+
+232
+
+195
+
+157
+
+128
+
+88
+
+
+-rw-r--r-- 1 devel devel  617984 Aug 16 05:40 hello_world_test.uf2
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 21:06:53
+
+Press CTRL-A Z for help on special keys
+
+Testing LoadModelAndPerformInference
+1/1 tests passed
+~~~ALL TESTS PASSED~~~
+
+-rw-r--r-- 1 devel devel   53248 Aug 16 05:34 output_handler_test.uf2
+
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 05:51:39
+
+Press CTRL-A Z for help on special keys
+
+Testing TestCallability
+127
+                                                              
+1/1 tests passed                                              
+~~~ALL TESTS PASSED~~~ 
+
+
+ ls -la
+total 17732
+drwxr-xr-x  3 devel devel    4096 Aug 16 06:40 .
+drwxr-xr-x  7 devel devel    4096 Aug 15 09:17 ..
+-rwxr-xr-x  1 devel devel   25836 Aug 16 06:15 audio_provider_test.bin
+-rw-r--r--  1 devel devel  435572 Aug 16 06:15 audio_provider_test.dis
+-rwxr-xr-x  1 devel devel  120120 Aug 16 06:15 audio_provider_test.elf
+-rw-r--r--  1 devel devel  672697 Aug 16 06:15 audio_provider_test.elf.map
+-rw-r--r--  1 devel devel   72744 Aug 16 06:15 audio_provider_test.hex
+-rw-r--r--  1 devel devel   51712 Aug 16 06:15 audio_provider_test.uf2
+drwxr-xr-x 13 devel devel    4096 Aug 16 05:34 CMakeFiles
+-rw-r--r--  1 devel devel    1145 Aug 15 09:17 cmake_install.cmake
+-rwxr-xr-x  1 devel devel   25352 Aug 16 06:33 command_responder_test.bin
+-rw-r--r--  1 devel devel  431410 Aug 16 06:33 command_responder_test.dis
+-rwxr-xr-x  1 devel devel  119948 Aug 16 06:33 command_responder_test.elf
+-rw-r--r--  1 devel devel  679569 Aug 16 06:33 command_responder_test.elf.map
+-rw-r--r--  1 devel devel   71386 Aug 16 06:33 command_responder_test.hex
+-rw-r--r--  1 devel devel   51200 Aug 16 06:33 command_responder_test.uf2
+-rwxr-xr-x  1 devel devel   47884 Aug 16 06:40 feature_provider_test.bin
+-rw-r--r--  1 devel devel  827827 Aug 16 06:40 feature_provider_test.dis
+-rwxr-xr-x  1 devel devel  277744 Aug 16 06:40 feature_provider_test.elf
+-rw-r--r--  1 devel devel  714394 Aug 16 06:40 feature_provider_test.elf.map
+-rw-r--r--  1 devel devel  134754 Aug 16 06:40 feature_provider_test.hex
+-rw-r--r--  1 devel devel   96256 Aug 16 06:40 feature_provider_test.uf2
+-rw-r--r--  1 devel devel 1994056 Aug 16 05:34 Makefile
+-rwxr-xr-x  1 devel devel   50300 Aug 16 06:23 micro_features_generator_test.bin
+-rw-r--r--  1 devel devel  825835 Aug 16 06:23 micro_features_generator_test.dis
+-rwxr-xr-x  1 devel devel  281960 Aug 16 06:23 micro_features_generator_test.elf
+-rw-r--r--  1 devel devel  738962 Aug 16 06:23 micro_features_generator_test.elf.map
+-rw-r--r--  1 devel devel  141549 Aug 16 06:23 micro_features_generator_test.hex
+-rw-r--r--  1 devel devel  100864 Aug 16 06:23 micro_features_generator_test.uf2
+-rwxr-xr-x  1 devel devel  192764 Aug 16 06:28 micro_speech_mock.bin
+-rw-r--r--  1 devel devel 2068186 Aug 16 06:28 micro_speech_mock.dis
+-rwxr-xr-x  1 devel devel  632820 Aug 16 06:28 micro_speech_mock.elf
+-rw-r--r--  1 devel devel  745307 Aug 16 06:28 micro_speech_mock.elf.map
+-rw-r--r--  1 devel devel  542250 Aug 16 06:28 micro_speech_mock.hex
+-rw-r--r--  1 devel devel  385536 Aug 16 06:28 micro_speech_mock.uf2
+-rwxr-xr-x  1 devel devel  101300 Aug 16 06:19 micro_speech_test.bin
+-rw-r--r--  1 devel devel 1499401 Aug 16 06:19 micro_speech_test.dis
+-rwxr-xr-x  1 devel devel  248236 Aug 16 06:19 micro_speech_test.elf
+-rw-r--r--  1 devel devel  690062 Aug 16 06:19 micro_speech_test.elf.map
+-rw-r--r--  1 devel devel  284997 Aug 16 06:19 micro_speech_test.hex
+-rw-r--r--  1 devel devel  202752 Aug 16 06:19 micro_speech_test.uf2
+-rwxr-xr-x  1 devel devel   29504 Aug 16 06:37 simple_features_generator_test.bin
+-rw-r--r--  1 devel devel  464306 Aug 16 06:37 simple_features_generator_test.dis
+-rwxr-xr-x  1 devel devel  125716 Aug 16 06:37 simple_features_generator_test.elf
+-rw-r--r--  1 devel devel  706943 Aug 16 06:37 simple_features_generator_test.elf.map
+-rw-r--r--  1 devel devel   83057 Aug 16 06:37 simple_features_generator_test.hex
+-rw-r--r--  1 devel devel   59392 Aug 16 06:37 simple_features_generator_test.uf2
+
+
+ls -la
+total 12612
+drwxr-xr-x 3 devel devel    4096 Aug 16 06:13 .
+drwxr-xr-x 7 devel devel    4096 Aug 15 09:17 ..
+drwxr-xr-x 7 devel devel    4096 Aug 16 05:34 CMakeFiles
+-rw-r--r-- 1 devel devel    1143 Aug 15 09:17 cmake_install.cmake
+-rwxr-xr-x 1 devel devel   25892 Aug 16 05:59 gesture_accelerometer_handler_test.bin
+-rw-r--r-- 1 devel devel  436932 Aug 16 05:59 gesture_accelerometer_handler_test.dis
+-rwxr-xr-x 1 devel devel  120168 Aug 16 05:59 gesture_accelerometer_handler_test.elf
+-rw-r--r-- 1 devel devel  712167 Aug 16 05:59 gesture_accelerometer_handler_test.elf.map
+-rw-r--r-- 1 devel devel   72895 Aug 16 05:59 gesture_accelerometer_handler_test.hex
+-rw-r--r-- 1 devel devel   52224 Aug 16 05:59 gesture_accelerometer_handler_test.uf2
+-rwxr-xr-x 1 devel devel   25700 Aug 16 06:09 gesture_output_handler_test.bin
+-rw-r--r-- 1 devel devel  432232 Aug 16 06:09 gesture_output_handler_test.dis
+-rwxr-xr-x 1 devel devel  119976 Aug 16 06:09 gesture_output_handler_test.elf
+-rw-r--r-- 1 devel devel  692899 Aug 16 06:09 gesture_output_handler_test.elf.map
+-rw-r--r-- 1 devel devel   72355 Aug 16 06:09 gesture_output_handler_test.hex
+-rw-r--r-- 1 devel devel   51712 Aug 16 06:09 gesture_output_handler_test.uf2
+-rwxr-xr-x 1 devel devel   26368 Aug 16 06:13 gesture_predictor_test.bin
+-rw-r--r-- 1 devel devel  446852 Aug 16 06:13 gesture_predictor_test.dis
+-rwxr-xr-x 1 devel devel  120496 Aug 16 06:13 gesture_predictor_test.elf
+-rw-r--r-- 1 devel devel  680181 Aug 16 06:13 gesture_predictor_test.elf.map
+-rw-r--r-- 1 devel devel   74237 Aug 16 06:13 gesture_predictor_test.hex
+-rw-r--r-- 1 devel devel   52736 Aug 16 06:13 gesture_predictor_test.uf2
+-rwxr-xr-x 1 devel devel  120068 Aug 16 06:06 magic_wand.bin
+-rw-r--r-- 1 devel devel 1984197 Aug 16 06:06 magic_wand.dis
+-rwxr-xr-x 1 devel devel  424876 Aug 16 06:06 magic_wand.elf
+-rw-r--r-- 1 devel devel  686754 Aug 16 06:06 magic_wand.elf.map
+-rw-r--r-- 1 devel devel  337782 Aug 16 06:06 magic_wand.hex
+-rwxr-xr-x 1 devel devel  124168 Aug 16 06:02 magic_wand_test.bin
+-rw-r--r-- 1 devel devel 1990089 Aug 16 06:02 magic_wand_test.dis
+-rwxr-xr-x 1 devel devel  428044 Aug 16 06:02 magic_wand_test.elf
+-rw-r--r-- 1 devel devel  699528 Aug 16 06:02 magic_wand_test.elf.map
+-rw-r--r-- 1 devel devel  349310 Aug 16 06:02 magic_wand_test.hex
+-rw-r--r-- 1 devel devel  248832 Aug 16 06:02 magic_wand_test.uf2
+-rw-r--r-- 1 devel devel  240640 Aug 16 06:06 magic_wand.uf2
+-rw-r--r-- 1 devel devel  984666 Aug 16 05:34 Makefile
+
+
+
