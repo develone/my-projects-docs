@@ -1,3 +1,5 @@
+https://www.tensorflow.org/lite/microcontrollers/get_started_low_level
+
 Rebuilding on pi4-36 08/19/22
 
 sudo mksquashfs pico-tflmicro pico-tflmicro-pi4-27-4bbd8f-081622.img
