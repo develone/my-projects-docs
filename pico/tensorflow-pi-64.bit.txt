@@ -1,0 +1,48 @@
+The requires a Raspberry Pi4 4Gb running Raspberry Pi OS 64bit
+In order to build Tensorflow requires bazel.
+
+Essential Bazel — ... Build and test software of any size, quickly and reliably. Industry leaders like Google, 
+Stripe, and Dropbox trust Bazel to build heavy-duty ..
+
+Linux pi4-37 5.15.56-v8+ #1575 SMP PREEMPT Fri Jul 22 20:31:26 BST 2022 aarch64 GNU/Linux
+Theses links provide how an application could run on low end systems like RPi zero .
+https://qengineering.eu/
+https://qengineering.eu/install-tensorflow-2.2.0-on-raspberry-pi-4.html
+I have a question, why tensorflow would take 41 hrs creating a pip package and 9 hrs. creating  a C++.
+
+Next I will be testing the C++ approach.
+Linux pi4-38 5.15.32-v8+ #1538 SMP PREEMPT Thu Mar 31 19:40:39 BST 2022 aarch64 GNU/Linux
+
+This shows why I believe PICO using TensorFlow Lite is best with Ultibo.
+
+Currenlty testing the pip package approach.
+
+https://qengineering.eu/shop.html
+
+Ultibo provides:
+Camera 
+Networking
+disk storage
+Interfaces to Pico 
+	UART.
+
+Pico provides:
+Tensorflow lite
+FreeRtos
+WIFI
+The WIFI could provide additional network since it provides https://github.com/develone/pico-exampl ... cess_point
+
+sudo bazel --host_jvm_args=-Xmx1624m build \
+             --config=opt \
+             --config=noaws \
+             --config=nogcp \
+             --config=nohdfs \
+             --config=nonccl \
+             --config=monolithic \
+             --config=v2 \
+             --local_cpu_resources=1 \
+             --define=tflite_pip_with_flex=true \
+             --copt=-ftree-vectorize \
+             --copt=-funsafe-math-optimizations \
+             --copt=-ftree-loop-vectorize \
+             --copt=-fomit-frame-pointer \

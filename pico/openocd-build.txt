@@ -1,0 +1,23 @@
+
+git clone https://github.com/raspberrypi/openocd.git --recursive --branch rp2040 --depth=1
+cd openocd/
+./bootstrap 
+./configure --prefix=/home/devel/local/openocd --enable-ftdi --enable-sysfsgpio --enable-bcm2835gpio
+make
+make install
+cd ..
+sudo mksquashfs openocd openocd082722-228ede-64bit.img
+
+Raspberry Pi O/S 64 bit 
+openocd -v
+Open On-Chip Debugger 0.11.0-g228ede4-dirty (2022-08-27-19:45)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+
+Raspberry Pi O/S 32 bit
+openocd -v
+Open On-Chip Debugger 0.11.0-g610f137-dirty (2022-05-03-08:59)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
