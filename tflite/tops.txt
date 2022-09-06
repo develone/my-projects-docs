@@ -1,0 +1,68 @@
+08/29/22
+
+tflite-micro/tensorflow/lite/kernels/internal/reference/
+
+add.h                  fill.h                        prelu.h
+add_n.h                floor_div.h                   process_broadcast_shapes.h
+arg_min_max.h          floor.h                       quantize.h
+batch_matmul.h         floor_mod.h                   reduce.h
+batch_to_space_nd.h    fully_connected.h             requantize.h
+binary_function.h      hard_swish.h                  resize_bilinear.h
+broadcast_args.h       integer_ops                   resize_nearest_neighbor.h
+broadcast_to.h         l2normalization.h             round.h
+ceil.h                 leaky_relu.h                  select.h
+comparisons.h          logistic.h                    slice.h
+concatenation.h        log_softmax.h                 softmax.h
+conv.h                 lstm_cell.h                   space_to_batch_nd.h
+cumsum.h               maximum_minimum.h             space_to_depth.h
+depth_to_space.h       mul.h                         strided_slice.h
+depthwiseconv_float.h  neg.h                         sub.h
+depthwiseconv_uint8.h  pad.h                         tanh.h
+dequantize.h           pooling.h                     transpose_conv.h
+div.h                  portable_tensor_utils.cc      transpose.h
+elu.h                  portable_tensor_utils.h
+exp.h                  portable_tensor_utils_impl.h 
+
+pico-tflmicro/src/tensorflow/lite/kernels/internal/reference/
+
+add.h                  fully_connected.h  process_broadcast_shapes.h
+arg_min_max.h          hard_swish.h       quantize.h
+binary_function.h      integer_ops        reduce.h
+ceil.h                 l2normalization.h  requantize.h
+comparisons.h          logistic.h         resize_nearest_neighbor.h
+concatenation.h        maximum_minimum.h  round.h
+conv.h                 mul.h              softmax.h
+depthwiseconv_float.h  neg.h              strided_slice.h
+depthwiseconv_uint8.h  pad.h              sub.h
+dequantize.h           pooling.h          tanh.h
+floor.h                prelu.h
+
+
+python3 tensorflow/lite/micro/tools/project_generation/create_tflm_tree.py \
+  -e hello_world \
+  -e micro_speech \
+  -e magic_wand \
+  -e person_detection \
+  /tmp/tflm-tree
+
+git clone git@github.com:develone/pico-tflmicro-083022.git
+
+cd my-pico-tflmicro/
+
+git clone git@github.com:develone/pico-sdk.git
+
+cd pico-sdk
+
+git submodule update --init
+
+cd ../
+
+mkdir build
+
+cd build
+
+export PICO_SDK_PATH=../pico-sdk/
+
+cmake -DPICO_BOARD=pico ..
+
+make
