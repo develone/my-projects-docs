@@ -1,0 +1,13 @@
+fails
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program examples/magic_wand/gesture_accelerometer_handler_test.elf verify reset exit"
+gesture_accelerometer_handler_test.png
+
+works
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program examples/magic_wand/gesture_output_handler_test.elf verify reset exit"
+gesture_output_handler_test
+
+no output
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program examples/magic_wand/magic_wand_test.elf verify reset exit"
+
+works
+openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg -c "program examples/magic_wand/magic_wand_test.elf verify reset exit"
