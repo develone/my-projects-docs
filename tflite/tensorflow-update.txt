@@ -1,0 +1,84 @@
+
+08/29/22 new branch dev092222 in pico-tflmicro repo
+
+commit 89d554d791fe3b76e5f2654d5ae3ff7ad053dc53 (HEAD -> main, origin/main, origin/HEAD)
+Author: Vamsi Krishna Manchala <110555921+vamsimanchala@users.noreply.github.com>
+Date:   Wed Sep 21 19:09:02 2022 -0700
+
+    Suppress the failing test from TAP Presubmit
+    
+python3 tensorflow/lite/micro/tools/project_generation/create_tflm_tree.py \
+  -e hello_world \
+  -e micro_speech \
+  -e magic_wand \
+  -e person_detection \
+  /tmp/tflm-tred
+
+created in ~/xx/src-chg-test/tensorflow-update/
+	tensorflow-old
+	third_party-old
+	examples-old
+
+/home/devel/xx/src-chg-test/tensorflow-update/pico-tflmicro
+
+git branch -a
+* dev092222
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/dev090222
+  remotes/origin/dev092222
+  remotes/origin/main
+  
+remove src/* in new branch 
+copied -R tflm-tree/tensorflow src
+copied -R tflm-tree/third_party src  
+copied -R tflm-tree/examples .
+
+cp -R ../tensorflow-old/lite/micro/pico  src/tensorflow/lite/micro/
+cp -R ../tensorflow-old/lite/micro/benchmarks  src/tensorflow/lite/micro/
+cp -R ../tensorflow-old/lite/micro/testing  src/tensorflow/lite/micro/
+
+cd my-pico-tflmicro/
+
+git clone git@github.com:develone/pico-sdk.git
+
+cd pico-sdk
+
+git submodule update --init
+
+cd ../
+
+mkdir build
+
+cd build
+
+export PICO_SDK_PATH=../pico-sdk/
+
+build the libs with examples all commented out.
+
+
+cmake -DPICO_BOARD=pico ..
+
+make
+
+ 
+
+git status | less
+        deleted:    src/tensorflow/LICENSE
+        deleted:    src/tensorflow/core/public/version.h
+
+        deleted:    src/tensorflow/lite/version.h
+        deleted:    src/third_party/ruy/LICENSE
+        
+        modified:   examples/hello_world/main_functions.cc
+        modified:   examples/hello_world/output_handler.cc
+        modified:   examples/hello_world/output_handler.h
+
+ls -la *.a
+-rw-r--r-- 1 devel devel 1787490 Sep 23 15:21 libpico-tflmicro.a
+-rw-r--r-- 1 devel devel  234532 Sep 23 14:55 libpico-tflmicro_test.a
+
+~/xx/src-chg-test/tensorflow-update/pico-tflmicro/build
+        
+cp ../../examples-old/hello_world/CMakeLists.txt ../examples/hello_world/
+
+cp ../../examples-old/hello_world/main.cc ../examples/hello_world/
