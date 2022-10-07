@@ -2,7 +2,9 @@ Machine Learning requires quite a bit of knowlege in several computer areas.
 
 These areas include cameras,  microphones, 3D Gyroscope, 3D Accelerometer, other sensors and micro processor. 
 Software also plays a major role in making one successful in the area of study.  The book provides
-a very good introductary overview of the current status of Machine Learning. 
+a very good introductary overview of the current status of Machine Learning. The book also
+tries to explain the need for ML in several areas privacy, and latency in the networking
+as the size and number of images continues to out pace the growth in networking. 
 In a 2nd edition, prehaps a description of how the ML models are generation would 
 be helpful. Like the one in "https://github.com/develone/my-projects-docs/blob/master/tflite/video-series1.pdf".
 Also a description of how the python is executed in an Nano-RP2040-Connect as a file 
