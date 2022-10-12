@@ -1,0 +1,36 @@
+10/12/22
+
+youtube video
+
+https://www.youtube.com/watch?v=NPXBRX7N3ec
+Sam Westby
+
+sudo apt-get update
+
+sudo apt-get upgrade -y
+
+mkdir tflite-project
+
+cd tflite-project/
+
+python3 -m venv tflite
+
+source tflite/bin/activate
+
+python3 -m pip install tflite-runtime
+
+(tflite) devel@pi4-34:~/tflite-project $ python3
+Python 3.9.2 (default, Feb 28 2021, 17:03:44) 
+[GCC 10.2.1 20210110] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import tflite_runtime
+>>> tflite_runtime.__version__
+'2.10.0'
+>>> quit()
+
+git clone https://github.com/tensorflow/examples --depth 1
+
+cd examples/lite/examples/image_classification/raspberry_pi/
+
+sh setup.sh
+sudo apt-get install libatlas-base-dev
