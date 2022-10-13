@@ -20,3 +20,8 @@ In a 2nd edition, prehaps a description of how the ML models are generation woul
 be helpful. Like the one in "https://github.com/develone/my-projects-docs/blob/master/tflite/video-series1.pdf".
 Also a description of how the python is executed in an Nano-RP2040-Connect as a file 
 model.cc which is just a bunch of hex numbers.
+
+This field requires a good understanding of different programming languages Python, C/C++ and Java.
+Data types int, float, strings, an arrays and the machine 32 bit vs 64 bit that processing the data.
+One of the virtures is the showing how many areas manufacturing, farming, industrial, and medical would benefit
+from machine learning. 
