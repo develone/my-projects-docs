@@ -1,10 +1,21 @@
 Machine Learning requires quite a bit of knowlege in several computer areas.  
+The book did not touch on the subject of FFT, DWT, SVD, Convolution and other very important math concepts.
+Linear algebra and matrices such import area the book provided a good overview of a vector 1D, image 2D, 
+cube 3D and the fourth dimenison.  This is the tensor way of working with data. 
 
-These areas include cameras,  microphones, 3D Gyroscope, 3D Accelerometer, other sensors and micro processor. 
-Software also plays a major role in making one successful in the area of study.  The book provides
+Need an introduction on neural networks.
+
+These areas include cameras, microphones, 3D Gyroscope, 3D Accelerometer, other sensors (temperature, 
+barometric pressure, light and humidity) Ultrasonic  and micro processors. One area that is often ignored 
+are the interfaces of the sensors analog requiring (analog to digtal conversion), I2C, SPI, Serial, 
+and bit banged. 
+Software also plays a major role in making one successful in the area of study.  Another area that must
+be considered are the tools pico-sdk, Arduino IDE and vendor eco system.  Software libraies like TensorFlow and 
+TensorFlow Lite provide a wide range of capabilties. These libraries are very large and many lines of code.
+ consist The book provides
 a very good introductary overview of the current status of Machine Learning. The book also
 tries to explain the need for ML in several areas privacy, and latency in the networking
-as the size and number of images continues to out pace the growth in networking. 
+as the size and number of images continues to out pace the growth in networking.  
 In a 2nd edition, prehaps a description of how the ML models are generation would 
 be helpful. Like the one in "https://github.com/develone/my-projects-docs/blob/master/tflite/video-series1.pdf".
 Also a description of how the python is executed in an Nano-RP2040-Connect as a file 
