@@ -1,0 +1,26 @@
+ https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-openmv-setup
+ 
+ To make the Arduino Nano RP2040 Connect able to connect with the OpenMV 
+ IDE and allow us to write scripts in MicroPython we first need to 
+ update its firmware. This tutorial will show you how to make the 
+ Nano RP2040 Connect work with OpenMV. We will first go through how 
+ to update the board's firmware, to make it compatible with OpenMV. 
+ Then we wi
+ ll run a simple script on the board using OpenMV.
+ 
+ Activating the Bootloader Mode
+
+First we need to forcefully trigger the bootloader so that OpenMV can 
+install the required firmware on our board. You can do that by double 
+tapping the reset button on the board. A mass store device named
+
+RPI-RP2
+
+should mount automatically. If this doesn't work, follow the steps below 
+to force the board into bootloader mode
+
+Forcing the Bootloader
+
+Begin by disconnecting the board from your computer by removing the USB cable. 
+Now place a jumper wire between the REC and GND pins on the board, 
+then connect the board to your computer.
