@@ -1,0 +1,123 @@
+10/13/22 
+Installing uf2 files on nano-rp2040-connect
+/home/devel/xx/devel-pico-tflmicro/build/examples/magic_wand/gesture_predictor_test.uf2
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0
+
+Press CTRL-A Z for help on special keys
+
+Testing SuccessfulPrediction
+Testing FailPartWayThere
+Testing InsufficientProbability
+3/3 tests passed
+~~~ALL TESTS PASSED~~~
+
+/home/devel/xx/devel-pico-tflmicro/build/examples/magic_wand/gesture_output_handler_test.uf2
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 17:35:23
+
+Press CTRL-A Z for help on special keys
+
+Testing TestCallability
+WING:
+*         *         *
+ *       * *       *
+  *     *   *     *
+   *   *     *   *
+    * *       * *
+     *         *
+
+RING:
+          *
+       *     *
+     *         *
+    *           *
+     *         *
+       *     *                                                                  
+          *                                                                     
+                                                                                
+SLOPE:                                                                          
+        *                                                                       
+       *                                                                        
+      *   
+                                                                            
+     *                                                                          
+    *                                                                           
+   *                                                                            
+  *                                                                             
+ * * * * * * * *                                                                
+                                                                                
+1/1 tests passed                                                                
+~~~ALL TESTS PASSED~~~ 
+
+/home/devel/xx/devel-pico-tflmicro/build/examples/magic_wand/magic_wand.uf2
+Welcome to minicom 2.8
+
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 17:35:23
+
+audio_provider_mock_test.uf2
+
+command_responder_test.uf2
+
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 17:35:23
+
+Press CTRL-A Z for help on special keys
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 17:35:23
+
+Press CTRL-A Z for help on special keys
+
+Testing TestAudioProviderMock
+1/1 tests passed
+~~~ALL TESTS PASSED~~~
+
+Testing TestCallability
+Heard foo (0) @0ms
+1/1 tests passed
+~~~ALL TESTS PASSED~~~
+
+audio_provider_test.uf2
+
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 17:35:23
+
+Press CTRL-A Z for help on special keys
+
+Testing TestAudioProvider
+Testing TestTimer
+2/2 tests passed
+~~~ALL TESTS PASSED~~~
+
+recognize_commands_test.uf2
+
+Welcome to minicom 2.8
+
+OPTIONS: I18n 
+Port /dev/ttyUSB0, 17:35:23
+
+Press CTRL-A Z for help on special keys
+
+Testing PreviousResultsQueueBasic
+Testing PreviousResultsQueuePushPop
+Testing RecognizeCommandsTestBasic
+Testing RecognizeCommandsTestFindCommands
+Testing RecognizeCommandsTestBadInputLength
+The results for recognition should contain 4 elements, but there are 3 in an 2-e
+Testing RecognizeCommandsTestBadInputTimes
+Results must be fed in increasing time order, but received a timestamp of 0 tha0
+Testing RecognizeCommandsTestTooFewInputs
+7/7 tests passed
+~~~ALL TESTS PASSED~~~
