@@ -1,0 +1,56 @@
+hostname
+-pi4-28
+-
++raspberrypi
+
+dphys-swapfile
+-CONF_SWAPSIZE=1000
++CONF_SWAPSIZE=100
+
+uname -m
+aarch64
+extra_pkgs_64bit.sh
+extra_1.sh
+extra_2.sh
+extra_3.sh
+   2207   22635  308292 pkgs-a.txt
+   2239   22978  312904 pkgs-b.txt
+   2246   23050  313924 pkgs-c.txt
+   1418   14331  184451 pkgs.txt
+ssh-keygen -t rsa
+ssh-copyid pi4-27
+
+cp .octaverc pi4-28:~/
+ ls *.img
+installed-openocd082722-228ede-64bit.img  qemu-6.2.0-rpios-64bit.img
+openocd082722-228ede-64bit.img            ultibo2.5.123-082722-64bit.img
+
+sudo unsquashfs -d ultibo  ultibo2.5.123-082722-64bit.img
+
+scp .local/share/applications/ultibo.desktop pi4-28:~/.local/share/applications/
+
+git clone git@github.com:develone/Ultibo_Projects.git
+
+devel@pi4-28:~/Ultibo_Projects/jpeg2000/src $ ./compile_ultibo.sh
+
+cd ../QEMU/
+
+./libbuild.sh
+
+sudo unsquashfs -d qemu-6.2.0-rpios qemu-6.2.0-rpios-64bit.img
+
+. Ultibo_Projects/picoultibo.sh
+
+first compile jpeg2000 QEMU with Lazarus IDE (Ultibo Edition)
+./startqemu.sh
+
+sudo unsquashfs installed-openocd082722-228ede-64bit.img
+
+cp -R squashfs-root/* local/openocd/
+
+ which openocd 
+/home/devel/local/openocd/bin/openocd
+
+mkdir test-1-2.8
+cd test-1-2.8/
+python3 -m venv env
