@@ -51,6 +51,28 @@ cp -R squashfs-root/* local/openocd/
  which openocd 
 /home/devel/local/openocd/bin/openocd
 
+Very important for setting a virtual env
+curl https://pyenv.run | bash
+
 mkdir test-1-2.8
 cd test-1-2.8/
 python3 -m venv env
+
+source env/bin/activate
+
+pip3 install -U wheel tensorflow-2.8.0-cp39-none-linux_aarch64.whl
+
+pip3 install protobuf==3.20.*
+pip3 install ipython
+pip3 install nbformat
+pip3 install pandas
+pip3 install matplotlib
+pip3 install -U wheel six 
+pip3 install -U wheel mock
+python3
+Python 3.9.2 (default, Feb 28 2021, 17:03:44) 
+[GCC 10.2.1 20210110] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import tensorflow as tf
+>>> print(tf.__version__)
+2.8.0
