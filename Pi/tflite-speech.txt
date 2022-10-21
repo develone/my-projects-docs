@@ -1,0 +1,4 @@
+10/18/22
+
+https://github.com/develone/tflite-speech-recognition
+https://www.digikey.com/en/maker/projects/tensorflow-lite-tutorial-part-3-speech-recognition-on-raspberry-pi/8a2dc7d8a9a947b4a953d37d3b271c71?utm_campaign=tensorflow_lite_tutorial_&utm_content=digikey&utm_medium=social&utm_source=twitter
