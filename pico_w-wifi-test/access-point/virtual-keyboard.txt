@@ -1,0 +1,2 @@
+https://pimylifeup.com/raspberry-pi-on-screen-keyboard/
+sudo apt install matchbox-keyboard
