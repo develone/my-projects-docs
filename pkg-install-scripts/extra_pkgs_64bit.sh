@@ -15,7 +15,7 @@ gtkmm-3.0 gperf build-essential nfs-kernel-server gpac \
 libeigen3-dev libffi-dev libssl-dev python python3-pip libtiff-dev ppp \
 gdb-multiarch firefox-esr ninja-build code ecryptfs-utils \
 liboctave-dev rpi-imager autoconf automake libreoffice indent iperf \
-wireshark
+wireshark nmap
 #sudo apt-get remove python-configparser
 
 #sudo pip install docker-compose
