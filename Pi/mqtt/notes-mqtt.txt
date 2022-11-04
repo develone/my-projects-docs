@@ -1,7 +1,60 @@
 installed with mosquitto.sh after seeing youtube Gary Explains
+https://www.youtube.com/watch?v=p3vJxGKWDIg&t=1006s
  
 mosquitto_sub -t GARY
 msg1
 msg2
 mosquitto_pub -t GARY -m "msg1"
 mosquitto_pub -t GARY -m "msg2"
+
+The Arduino Nano RP2040 Connect
+Connect to local WiFi using ~/devel/Arduino/mqtt/arduino_secrets.h
+changing the items below to SSID & password 
+#define SECRET_SSID "Put-your-SSID-here"
+#define SECRET_PASS "myverysecretpassword"
+
+192.168.1.179 / arduino-8f48
+Nmap scan report for arduino-8f48.attlocal.net (192.168.1.179)
+arduino-8f48.attlocal.net (192.168.1.179) at 30:c6:f7:01:8f:48 [ether] on eth0
+Testing Arduino RP2040 Cnnect
+
+first shell
+
+mosquitto_sub -t arduino/simple
+
+2nd shell 
+mosquitto_pub -t arduino/simple -m "msg1"
+
+first shell
+mosquitto_sub -t arduino/simple
+msg1
+
+If you can not program the Arduino Nano RP2040 Connect need to 
+program with /home/devel/my-projects-docs/pico/documentation/nano-rp2040/Blink.ino.elf.uf2
+
+2nd video
+https://www.youtube.com/watch?v=tQmXWNd1pNk
+
+sudo systemctl restart mosquitto
+This was in the file /etc/mosquitto/passwd
+password:testuser:password123
+2nd command
+mosquitto_pub -t 'testtopic' -m 'Hello World!' -u 'testuser' -P 'password123'
+first command
+mosquitto_sub -t 'testtopic' -u 'testuser' -P 'password123'
+
+# Place your local configuration in /etc/mosquitto/conf.d/
+#
+# A full description of the configuration file is at
+# /usr/share/doc/mosquitto/examples/mosquitto.conf.example
+
+pid_file /run/mosquitto/mosquitto.pid
+
+persistence true
+persistence_location /var/lib/mosquitto/
+allow_anonymous true
+connect message true
+
+log_dest file /var/log/mosquitto/mosquitto.log
+
+include_dir /etc/mosquitto/conf.dq
