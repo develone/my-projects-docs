@@ -1,4 +1,6 @@
-tto_sub -t GARY
+installed with mosquitto.sh after seeing youtube Gary Explains
+ 
+mosquitto_sub -t GARY
 msg1
 msg2
 mosquitto_pub -t GARY -m "msg1"
