@@ -1,0 +1,51 @@
+pi4-38
+https://mosquitto.org/documentation/authentication-methods/
+
+sudo apt-get install mosquitto mosquitto-clients
+mosquitto
+1667650417: mosquitto version 2.0.11 starting
+1667650417: Using default config.
+1667650417: Starting in local only mode. Connections will only be possible from clients running on this machine.
+1667650417: Create a configuration file which defines a listener to allow remote access.
+1667650417: For more details see https://mosquitto.org/documentation/authentication-methods/
+1667650417: Opening ipv4 listen socket on port 1883.
+1667650417: Opening ipv6 listen socket on port 1883.
+1667650417: mosquitto version 2.0.11 running
+1667651226: New connection from ::1:45558 on port 1883.
+1667651226: New client connected from ::1:45558 as auto-D507A4C8-6C9D-557C-E95B-9C9FA6E9121F (p2, c1, k60).
+1667651310: New connection from ::1:47850 on port 1883.
+1667651310: New client connected from ::1:47850 as auto-8FD4E2A6-C70D-FBBD-A29E-675081C9DA76 (p2, c1, k60).
+1667651334: Client auto-8FD4E2A6-C70D-FBBD-A29E-675081C9DA76 disconnected.
+1667651379: New connection from ::1:55678 on port 1883.
+1667651379: New client connected from ::1:55678 as auto-C3CC2EA9-8C6A-F7CB-6735-F7757782222D (p2, c1, k60).
+1667651379: Client auto-C3CC2EA9-8C6A-F7CB-6735-F7757782222D disconnected.
+1667651404: New connection from ::1:51540 on port 1883.
+1667651404: New client connected from ::1:51540 as auto-C3C38D98-59AD-C162-1EE8-9AC0CD19F427 (p2, c1, k60).
+1667651404: Client auto-C3C38D98-59AD-C162-1EE8-9AC0CD19F427 disconnected.
+1667651411: New connection from ::1:51556 on port 1883.
+1667651411: New client connected from ::1:51556 as auto-EE2DA2C4-0C40-B57A-2836-1FB8B088D143 (p2, c1, k60).
+1667651411: Client auto-EE2DA2C4-0C40-B57A-2836-1FB8B088D143 disconnected.
+1667651425: New connection from ::1:47258 on port 1883.
+1667651425: New client connected from ::1:47258 as auto-00448448-E30D-465A-DA0B-F162B17D477E (p2, c1, k60).
+1667651425: Client auto-00448448-E30D-465A-DA0B-F162B17D477E disconnected.
+1667652597: Reloading config.
+
+cp /usr/share/doc/mosquitto/examples/mosquitto.conf .
+
+mosquitto_passwd -c /home/devel/mosquitto-pw testuser
+
+password123
+
+password123
+
+less ~/mosquitto-pw
+
+testuser:$7$101$7OIAauVb8Ow8mP6c$134ZYut+1qEracS7SWlsGXG7pndOKWvr/XeBWplTqgT9eShnEDkPBajQUOqPd1sVyt50RSOV4D85JDaYOlkW7A==
+
+sudo diff mosquitto.conf /home/devel/mosquitto.conf 
+512d511
+< allow_anonymous true
+
+ps -ax | grep mosquitto
+kill -HUP 2058
+sudo cp mosquitto.conf /etc/mosquitto/
