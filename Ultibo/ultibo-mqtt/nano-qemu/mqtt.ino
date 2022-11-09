@@ -22,12 +22,13 @@ WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 const int controlpin1 = 2;
 const int controlpin2 = 3; 
-const char broker[] = "192.168.1.142"; // RPI2 HW Address of the MQTT server
+const int controlpin3 = 4;
+//const char broker[] = "192.168.1.142"; // RPI2 HW Address of the MQTT server
 
 //const char broker[] = "192.168.1.180"; // RPI2 HW Address of the MQTT server
-int        port     = 1883;
-//const char broker[] = "192.168.1.229"; // QEMU pi4-27 Address of the MQTT server
-//int        port     = 9883;
+//int        port     = 1883;
+const char broker[] = "192.168.1.229"; // QEMU pi4-27 Address of the MQTT server
+int        port     = 9883;
 //const char broker[] = "192.168.1.173"; // QEMU pi4-37 Address of the MQTT server
 //const char broker[] = "192.168.1.211"; // QEMU pi4-38 Address of the MQTT server
 //const char topic[]  = "arduino/simple";
@@ -52,6 +53,7 @@ void setup() {
   pinMode(LEDR, OUTPUT);
   pinMode(LEDG, OUTPUT);
   pinMode(controlpin2, OUTPUT);
+  pinMode(controlpin3, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
   
@@ -79,7 +81,7 @@ void setup() {
   // You can provide a unique client ID, if not set the library uses Arduino-millis()
   // Each client must have a unique client ID
   // mqttClient.setId("clientId");
-  mqttClient.setId("clientId");
+  mqttClient.setId("CID1883");
 
 
   // You can provide a username and password for authentication
@@ -148,7 +150,7 @@ void loop() {
   if (buttonState == HIGH)
     buttonPrevState = HIGH;
 
-  if ( (buttonState == LOW) && (buttonPrevState == HIGH) ) {
+  //if ( (buttonState == LOW) && (buttonPrevState == HIGH) ) {
     count++;
     // send message, the Print interface can be used to set the message contents
     mqttClient.beginMessage(topic);
@@ -156,7 +158,21 @@ void loop() {
     mqttClient.print(count);
     mqttClient.endMessage();
     buttonPrevState = LOW;
+           digitalWrite(controlpin3, HIGH);   // turn the LED on (HIGH is the voltage level)
+           delay(200); 
+           digitalWrite(controlpin3, LOW);   // turn the LED on (LOW is the voltage level)
+           delay(200);
+           digitalWrite(controlpin1, HIGH);   // turn the LED on (HIGH is the voltage level)
+           delay(200); 
+           digitalWrite(controlpin1, LOW);   // turn the LED on (LOW is the voltage level)
+           delay(200);
+           digitalWrite(controlpin2, HIGH);   // turn the LED on (HIGH is the voltage level)
+           delay(200); 
+           digitalWrite(controlpin2, LOW);   // turn the LED on (LOW is the voltage level)
+           delay(200);
+
+
     Serial.println("Sent MQTT message.");
 
-  }
+  //}
 }
