@@ -22,10 +22,19 @@ WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 const int controlpin1 = 2;
 const int controlpin2 = 3; 
-const char broker[] = "192.168.1.229"; // Address of the MQTT server
-int        port     = 9883;
-const char topic[]  = "arduino/simple";
-const char subtopic[]  = "arduino/cmd";
+const char broker[] = "192.168.1.142"; // RPI2 HW Address of the MQTT server
+
+//const char broker[] = "192.168.1.180"; // RPI2 HW Address of the MQTT server
+int        port     = 1883;
+//const char broker[] = "192.168.1.229"; // QEMU pi4-27 Address of the MQTT server
+//int        port     = 9883;
+//const char broker[] = "192.168.1.173"; // QEMU pi4-37 Address of the MQTT server
+//const char broker[] = "192.168.1.211"; // QEMU pi4-38 Address of the MQTT server
+//const char topic[]  = "arduino/simple";
+const char topic[]  = "update/memo";
+
+
+//const char subtopic[]  = "arduino/cmd";
 
 const long interval = 1000;
 unsigned long previousMillis = 0;
@@ -99,7 +108,7 @@ void setup() {
   Serial.println("You're connected to the MQTT broker!");
   Serial.println();
   // subscribe to a topic
-  mqttClient.subscribe(subtopic);
+//  mqttClient.subscribe(subtopic);
   digitalWrite(LED_BUILTIN, LOW);
   digitalWrite(controlpin2, HIGH);   // turn the LED on (HIGH is the voltage level)
 }
