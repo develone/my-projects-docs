@@ -1,0 +1,16 @@
+https://www.youtube.com/watch?v=jTeJxQFD8Ak
+What is MQTT
+Basic concepts
+	Publish/Subscribe 
+	Client/Broker
+https://www.youtube.com/watch?v=r89uHL2wj5Q
+MQTT Main Features
+	IoT Messageing Protocol
+	On Top of TCP
+	Minimal overhead
+	Simple
+https://www.youtube.com/watch?v=HCzQJMdHcy0&t=182s
+Discusses the difference between Client/Server
+and Publish/Subscribe
+https://www.youtube.com/watch?v=vVJk5rES5vY	
+	
