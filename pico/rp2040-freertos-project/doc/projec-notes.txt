@@ -1,0 +1,12 @@
+The repo git@github.com:develone/rp2040-freertos-project.git
+provides the initial work with freeRtos. In addition it provides
+the work rp2040-logic-analyzer, HCSR04, lifting, klt, littlefs, i2c, 
+and cmake.
+
+Requirements:
+git clone --recursivegit@github.com:develone/FreeRTOS-Kernel.git
+
+git clone --recursive git@github.com:develone/rp2040-freertos-project.git
+
+devel@pi4-60:~/rp2040-freertos-project/build $ cmake -DPICO_BOARD=pico DFREERTOS
+_KERNEL_PATH:PATH=/home/devel/FreeRTOS-Kernel ..
