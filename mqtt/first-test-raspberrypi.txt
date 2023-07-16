@@ -1,0 +1,254 @@
+07/14/23
+Requirements:
+64Gb micro SD programmed with 64Bit Raspberry Pi O/S
+RPi3B+ with Display keyboard & mouse.
+Raspberry Pico_W 
+devel@raspberrypi:~/pico_w-mqtt/remote2 $ openocd -v
+Open On-Chip Debugger 0.11.0-g228ede4-dirty (2022-08-27-19:45)
+Licensed under GNU GPL v2
+For bug reports, read
+        http://openocd.org/doc/doxygen/bugs.html
+
+openocd is used on the Raspberry Pi to program the Raspberry Pico_W.
+uname -a
+Linux raspberrypi 6.1.21-v8+ #1642 SMP PREEMPT Mon Apr  3 17:24:16 BST 2023 aarch64 GNU/Linux
+
+extra64.sh which adds the packages needed to compile.
+
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install octave  vlc kicad  hexchat  \
+ gawk gimp gtkwave iverilog clang \
+samba samba-common-bin smbclient cifs-utils \
+libftdi-dev libmpc-dev libmpfr-dev squashfs-tools bc mercurial \
+libbison-dev libgmp-dev libelf-dev ncurses-dev \
+default-jdk libreadline-dev xdot graphviz minicom xpdf lrzsz \
+libusb-1.0.0 exuberant-ctags gparted ffmpeg \
+mesa-utils libboost-all-dev freeglut3 freeglut3-dev \
+python3-dev libgtk2.0-dev libcairo2-dev libpango1.0-dev \
+libgdk-pixbuf2.0-dev libatk1.0-dev libghc-x11-dev binutils-arm-none-eabi  \
+gcc-arm-none-eabi diffuse gitk tcl-dev telnet tftp hexedit cmake flex bison \
+gtkmm-3.0 gperf build-essential nfs-kernel-server gpac \
+libeigen3-dev libffi-dev libssl-dev python python3-pip libtiff-dev ppp \
+gdb-multiarch firefox-esr ninja-build code ecryptfs-utils \
+liboctave-dev rpi-imager autoconf automake libreoffice indent iperf \
+wireshark nmap  dnsmasq mosquitto mosquitto-clients fritzing doxygen espeak \
+libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev llvm \
+libncurses5-dev libncursesw5-dev xz-utils tk-dev libgdbm-dev lzma \
+lzma-dev tcl-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
+wget curl make build-essential openssl libhdf5-dev libc-ares-dev \
+libeigen3-dev gcc gfortran libgfortran5 libatlas3-base libatlas-base-dev \
+libopenblas-dev libopenblas-base libblas-dev liblapack-dev cython3 \
+libatlas-base-dev openmpi-bin libopenmpi-dev python3-dev \
+libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev \
+llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libgdbm-dev \
+lzma lzma-dev tcl-dev libxml2-dev libxmlsec1-dev libffi-dev \
+liblzma-dev wget curl make build-essential openssl \
+libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev \
+llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libgdbm-dev \
+lzma lzma-dev tcl-dev libxml2-dev libxmlsec1-dev libffi-dev \
+liblzma-dev wget curl make build-essential openssl \
+libusb-dev libreadline-dev libglib2.0-dev libudev-dev libdbus-1-dev \
+libical-dev libmosquitto-dev hostapd
+
+
+https://github.com/develone/pico_w-mqtt.git dev branch
+
+https://github.com/develone/pico-sdk.git
+
+Using pi4-50 broker first-test-raspberrypi
+
+devel@p4-1:~/pico_w-mqtt/remote2 $ ./exe-ocd.sh 
+
+devel@p4-1:~ $ minicom myusb0
+
+Starting FreeRTOS on core 0:
+Connected.
+MQTT client "remote2" connection cb: status 0
+MQTT client "remote2" request cb: err 0
+MQTT client "remote2" request cb: err 0
+Starting server at 192.168.1.160 on port 4001
+ntp address 5.161.186.39
+got ntp response: 14/07/2023 20:13:52
+
+
+devel@p4-1:~/pico_w-mqtt/remote2 $ iperf -c remote2
+------------------------------------------------------------
+Client connecting to remote2, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 192.168.1.215 port 53512 connected with 192.168.1.160 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3] 0.0000-10.0829 sec  17.9 MBytes  14.9 Mbits/sec
+
+devel@p4-1:~ $ mosquitto_sub -h 'pi4-50'  -t 'pico/status' -u 'testuser' -P 'password123'
+Onboard temperature = 25.27 C remote2 
+Onboard temperature = 25.27 C remote2 
+Onboard temperature = 25.27 C remote2 
+Onboard temperature = 25.27 C remote2 
+Onboard temperature = 25.27 C remote2 
+
+devel@p4-1:~/pico_w-mqtt/remote2 $ ../pico-cmd pi4-50
+
+mosquitto_pub  -h $1 -p 1883 -t 'pico/cmds' -u 'testuser' -P 'password123' -m 'x51955150a'
+Onboard temperature = 77.48 F remote2 
+Onboard temperature = 77.48 F remote2 
+Onboard temperature = 77.48 F remote2 
+Onboard temperature = 77.48 F remote2 
+Onboard temperature = 77.48 F remote2 
+
+*****************************************************
+Using raspberrypi broker 2nd-test-raspberrypi
+
+
+			/*192.168.1.212 0xc0a801d4 LWIP_MQTT_EXAMPLE_IPADDR_INIT pi4-50*/
+			#define LWIP_MQTT_EXAMPLE_IPADDR_INIT = IPADDR4_INIT(PP_HTONL(0xc0a801d4))
+			/*192.168.1.215 0xc0a801d7 LWIP_MQTT_EXAMPLE_IPADDR_INIT raspberrypig*/
+			#define LWIP_MQTT_EXAMPLE_IPADDR_INIT = IPADDR4_INIT(PP_HTONL(0xc0a801d7))
+
+devel@p4-1:~ mosquitto -c /etc/mosquitto/mosquitto.conf  
+1689368348: mosquitto version 2.0.11 starting
+1689368348: Config loaded from /etc/mosquitto/mosquitto.conf.
+1689368348: Opening ipv4 listen socket on port 1883.
+1689368348: Opening ipv6 listen socket on port 1883.
+1689368348: mosquitto version 2.0.11 running
+1689368371: New connection from 192.168.1.160:51969 on port 1883.
+1689368371: New client connected from 192.168.1.160:51969 as remote2 (p2, c1, k10, u'testuser').
+1689368442: New connection from 192.168.1.160:56574 on port 1883.
+1689368442: Client remote2 already connected, closing old connection.
+1689368442: New client connected from 192.168.1.160:56574 as remote2 (p2, c1, k10, u'testuser').
+
+devel@p4-1:~/pico_w-mqtt $ mosquitto_sub -t 'pico/status' -u 'testuser' -P 'password123'
+Onboard temperature = 24.80 C remote2 
+Onboard temperature = 24.80 C remote2 
+Onboard temperature = 24.80 C remote2 
+Onboard temperature = 24.80 C remote2 
+Onboard temperature = 24.80 C remote2 
+
+
+*****************************************************
+Need to stop Century Link on raspberrypi 
+sudo systemctl stop hostapd
+
+root@pi4-50:/etc/hostapd# diff hostapd.conf hostapd.conf.pi4-50 
+3c3
+< ssid=Century Link
+---
+> ssid=Pico_w-Net
+
+sudo systemctl start hostapd
+
+This is using Century Link abdca5860 which is running on pi4-50
+
+devel@pi4-50:~ $ sudo cat /var/lib/misc/dnsmasq.leases
+1689457365 28:cd:c1:01:35:6a 192.168.17.102 remote2 *
+1689456533 e4:5f:01:1a:8a:d9 192.168.17.107 pi4-27 01:e4:5f:01:1a:8a:d9
+
+MQTT client "remote2" request cb: err 0
+Starting server at 192.168.17.102 on port 4001
+ntp address 73.61.36.59
+got ntp response: 14/07/2023 21:56:22
+got ntp response: 14/07/2023 21:56:53
+Alarm Fired At Sunday 14 July 21:57:22 2023
+got ntp response: 14/07/2023 21:57:24
+
+Starting FreeRTOS on core 0:
+Connected.
+MQTT client "remote2" connection cb: status 0
+MQTT client "remote2" request cb: err 0
+MQTT client "remote2" request cb: err 0
+Starting server at 192.168.17.102 on port 4001
+ntp address 207.5.137.133
+got ntp response: 14/07/2023 22:01:58
+
+
+devel@p4-1:~ $ mosquitto_sub -t 'pico/status' -u 'testuser' -P 'password123'
+Onboard temperature = 25.27 C remote2 
+Onboard temperature = 25.27 C remote2 
+Onboard temperature = 25.27 C remote2 
+Onboard temperature = 25.27 C remote2 
+Onboard temperature = 25.27 C remote2 
+Onboard temperature = 24.80 C remote2 
+Onboard temperature = 24.80 C remote2 
+
+curl https://pyenv.run | bash
+
+*****************************************************
+07/16/23
+Now the Access Point, Broker, Code developement are all running on a
+RPi3B.
+
+pi4-2.img saved on backup 320 drive.
+
+root@p4-2:/etc# cat hostapd/hostapd.conf 
+interface=wlan0
+driver=nl80211
+ssid=Century Link2
+hw_mode=g
+channel=7
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=abdcda5860
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+root@p4-2:/etc# 
+
+###############################################################
+
+root@p4-2:/etc# cat dhcpcd.conf
+interface eth1
+    static ip_address=192.168.3.1/24	
+
+interface wlan0
+    static ip_address=192.168.13.1/24	
+    nohook wpa_supplicant
+    
+root@p4-2:/etc# cat dnsmasq.conf 
+interface=eth1
+dhcp-range=192.168.3.100,192.168.3.120,255.255.255.0,24h
+interface=wlan0
+dhcp-range=192.168.13.100,192.168.13.120,255.255.255.0,24h
+
+###############################################################
+
+root@p4-2:/etc# cat dnsmasq.conf 
+interface=eth1
+dhcp-range=192.168.3.100,192.168.3.120,255.255.255.0,24h
+interface=wlan0
+dhcp-range=192.168.13.100,192.168.13.120,255.255.255.0,24h
+
+###############################################################
+
+root@p4-2:/etc# cat iptables.ipv4.nat 
+# Generated by iptables-save v1.8.7 on Sat Jul 15 16:13:11 2023
+*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+-A POSTROUTING -o eth0 -j MASQUERADE
+COMMIT
+# Completed on Sat Jul 15 16:13:11 2023
+
+###############################################################
+
+devel@p4-2:~ $ mosquitto -c /etc/mosquitto/mosquitto.conf
+1689505294: mosquitto version 2.0.11 starting
+1689505294: Config loaded from /etc/mosquitto/mosquitto.conf.
+1689505294: Opening ipv4 listen socket on port 1883.
+1689505294: Opening ipv6 listen socket on port 1883.
+1689505294: mosquitto version 2.0.11 running
+1689505305: New connection from 192.168.13.116:61681 on port 1883.
+1689505305: New client connected from 192.168.13.116:61681 as remote1 (p2, c1, k10, u'testuser').
+1689505334: New connection from ::1:40246 on port 1883.
+1689505334: New client connected from ::1:40246 as auto-F1A9D086-247A-7D05-124B-34AAB3B32EA1 (p2, c1, k60, u'testuser').
+
+devel@p4-2:~ $ mosquitto_sub -t 'pico/status' -u 'testuser' -P 'password123'
+Onboard temperature = 28.07 C remote1 
+Onboard temperature = 28.07 C remote1 
+Onboard temperature = 28.07 C remote1 
+Onboard temperature = 28.07 C remote1 
