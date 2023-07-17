@@ -1,0 +1,25 @@
+devel@p4-2:~/rp2040-freertos-project $ find . -name *.elf
+./build/Scheduling/Scheduling.elf
+./build/Semaphore/Semaphore.elf
+./build/HCSR04/HCSR04.elf
+./build/test-read-crc16/test-read-crc16.elf
+./build/pico-sdk/src/rp2_common/boot_stage2/bs2_default.elf
+./build/first_pwm/50_pwm.elf
+./build/pico-littlefs/example2.elf
+./build/pico-littlefs/example1.elf
+./build/pico-littlefs/example0.elf
+./build/kltdwt-ultibo/kltdwt-ultibo.elf
+./build/ultibo_blink/ultibo_blink.elf
+./build/2tasks/2tasks.elf
+./build/pico-lifting/pico-lifting.elf
+./build/i2c/slave_mem_i2c/slave_mem_i2c.elf
+./build/i2c/lcd_1602_i2c/lcd_1602_i2c.elf
+./build/i2c/slave_i2c/slave_i2c.elf
+./build/test-read/test-read.elf
+./build/ProjectFiles/blink.elf
+./build/pico-ultibo/pico-ultibo.elf
+./build/2cores/multicore.elf
+./build/pico-lifting-sf/hello_usb.elf
+./build/rp2040-logic-analyzer/rp2040-logic-analyzer.elf
+./build/Mutex/Mutex.elf
+./build/klt-test/klt-test.elf:
