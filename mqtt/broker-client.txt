@@ -1,0 +1,57 @@
+Requirements:
+The following packages provide the mosquitto broker/client.
+These packages are not part of th
+ii  libmosquitto-dev:arm64                       2.0.11-1                           arm64        MQTT version 5.0/3.1.1/3.1 client library, development files
+ii  libmosquitto1:arm64                          2.0.11-1                           arm64        MQTT version 5.0/3.1.1/3.1 client library
+ii  mosquitto                                    2.0.11-1                           arm64        MQTT version 5.0/3.1.1/3.1 compatible message broker
+ii  mosquitto-clients                            2.0.11-1                           arm64        Mosquitto command line MQTT clients
+
+These packages are not part of the initial Raspberry pi O/S.
+They are installed with the script extra64.sh.
+
+The following command is used to start the broker.
+	mosquitto -c /etc/mosquitto/mosquitto.conf
+
+devel@pi4-3:~ $ mosquitto -c /etc/mosquitto/mosquitto.conf
+1689679212: mosquitto version 2.0.11 starting
+1689679212: Config loaded from /etc/mosquitto/mosquitto.conf.
+1689679212: Opening ipv4 listen socket on port 1883.
+1689679212: Opening ipv6 listen socket on port 1883.
+1689679212: mosquitto version 2.0.11 running
+1689679215: New connection from 192.168.12.102:56833 on port 1883.
+1689679215: New client connected from 192.168.12.102:56833 as remote3 (p2, c1, k10, u'testuser').
+1689679270: New connection from 192.168.1.212:43976 on port 1883.
+1689679270: New client connected from 192.168.1.212:43976 as auto-11194EBD-37D3-99F5-E289-31AC89BFC2A6 (p2, c1, k60, u'testuser').
+1689679284: Client auto-11194EBD-37D3-99F5-E289-31AC89BFC2A6 disconnected.
+
+This is what you see on the the broker when a local mosquitto client connects and 
+disconnects. 
+1689679441: New client connected from ::1:39004 as auto-7E2B00B4-4B83-E942-8AD5-7A2E600BEB1D (p2, c1, k60, u'testuser').
+1689679445: Client auto-7E2B00B4-4B83-E942-8AD5-7A2E600BEB1D disconnected.
+
+The following command is used to start mosquitto client1 on a remote system.
+	mosquitto_sub -h '192.168.1.215' -t 'pico/status' -u 'testuser' -P 'password123'	
+Note: The -h '192.168.1.215' option is used.
+
+mosquitto client1
+This command is used when the mosquitto client is on a system different than the
+broker.
+
+devel@pi4-50:~ $ mosquitto_sub -h '192.168.1.215' -t 'pico/status' -u 'testuser' -P 'password123'
+Onboard temperature = 30.88 C remote3 
+Onboard temperature = 30.88 C remote3 
+Onboard temperature = 30.88 C remote3 
+Onboard temperature = 30.88 C remote3
+
+he following command is used to start mosquitto client2.
+	mosquitto_sub -t 'pico/status' -u 'testuser' -P 'password123'
+	
+mosquitto client2
+This command is used when the mosquitto client is on the same as the broker.
+devel@pi4-3:~ $ mosquitto_sub -t 'pico/status' -u 'testuser' -P 'password123'
+Onboard temperature = 30.88 C remote3 
+Onboard temperature = 30.88 C remote3 
+Onboard temperature = 30.88 C remote3 
+
+
+ 
