@@ -38,7 +38,19 @@ devel@pi4-27:~/my-projects-docs $ less .git/config
 [branch "master"]
         remote = origin
         merge = refs/heads/master
+
 This provides a way that owner of repo can share changes with non-owners.
+devel@pi4-27:~/my-projects-docs $ git push
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 1.27 KiB | 651.00 KiB/s, done.
+Total 4 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To github.com:develone/my-projects-docs.git
+   a86d7e4..f20fff7  master -> master
+
 devel@pi4-3:~/my-projects-docs $ git pull
 hint: Pulling without specifying how to reconcile divergent branches is
 hint: discouraged. You can squelch this message by running one of the following
