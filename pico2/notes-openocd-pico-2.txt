@@ -1,0 +1,29 @@
+11/06/24 pi4-30
+mkdir testing-openocd-sdk-2.0.0
+cd testing-openocd-sdk-2.0.0/
+git clone https://github.com/raspberrypi/openocd.git
+ git branch -a
+* sdk-2.0.0
+cd openocd/
+git submodule update --init
+./bootstrap 
+./configure --prefix=/home/devel/local-pico2/openocd --enable-ftdi --enable-sysfsgpio --enable-bcm2835gpio
+make
+make install 
+
+which openocd 
+/home/devel/local-pico2/openocd/bin/openocd
+
+devel@pi4-30:~/pshell/build_rp2350 $ ./exe-ocd.sh 
+Open On-Chip Debugger 0.12.0+dev-gebec9504d (2024-11-06-23:37)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+embedded:startup.tcl:28: Error: Can't find interface/raspberrypi-swd.cfg
+in procedure 'script' 
+at file "embedded:startup.tcl", line 28
+ 2028  unset PICO_SDK_PATH
+ 2029  export PICO_SDK_PATH=/home/devel/pico2/pico-sdk
+ 2030  make clean
+ 2031  make
+ 2032  history 
