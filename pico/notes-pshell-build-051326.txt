@@ -1,0 +1,98 @@
+05/13/26
+PICTOOL_FETCH_FROM_GITHUB=/home/devel/pico2/BUILT_PICOTOOL
+devel@pi4-50:~/pico2/BUILT_PICOTOOL/picotool $ git remote -v
+origin  https://github.com/raspberrypi/picotool.git (fetch)
+origin  https://github.com/raspberrypi/picotool.git (push)
+
+PICO_SDK_PATH=/home/devel/pico2/pico-sdk
+devel@pi4-50:~/pico2/pico-sdk $ git branch -a
+* master
+kilograham	SDK 2.2.0 Release	a1438df	10 months ago
+devel@pi4-50:~/pico2/pico-sdk $  git remote -v
+origin  https://github.com/raspberrypi/pico-sdk.git (fetch)
+origin  https://github.com/raspberrypi/pico-sdk.git (push)
+
+devel@pi4-50:~ $ git clone https://github.com/develone/pshell.git -b test-dev
+devel@pi4-50:~ $ cd pshell
+devel@pi4-50:~/pshell $ git submodule update --init
+Submodule 'littlefs/module' (https://github.com/littlefs-project/littlefs.git) registered for path 'littlefs/module'
+Cloning into '/home/devel/pshell/littlefs/module'...
+Submodule path 'littlefs/module': checked out 'd01280e64934a09ba16cac60cf9d3a37e228bb66
+
+devel@pi4-50:~/pshell $ mkdir build
+devel@pi4-50:~/pshell $ cd build
+devel@pi4-50:~/pshell/build $ cat ../cmpico
+cmake .. -DUSB_CONSOLE=0 -DPICO_BOARD=pico -DPICO_PLATFORM=rp2040
+devel@pi4-50:~/pshell/build $ ../cmpico
+Using PICO_SDK_PATH from environment ('/home/devel/pico2/pico-sdk')
+PICO_SDK_PATH is /home/devel/pico2/pico-sdk
+Target board (PICO_BOARD) is 'pico'.
+Using board configuration from /home/devel/pico2/pico-sdk/src/boards/include/boards/pico.h
+Pico Platform (PICO_PLATFORM) is 'rp2040'.
+-- Defaulting build type to 'Release' since not specified.
+Defaulting compiler (PICO_COMPILER) to 'pico_arm_cortex_m0plus_gcc' since not specified.
+Configuring toolchain based on PICO_COMPILER 'pico_arm_cortex_m0plus_gcc'
+Defaulting PICO_GCC_TRIPLE to 'arm-none-eabi'
+-- The C compiler identification is GNU 12.2.1
+-- The CXX compiler identification is GNU 12.2.1
+-- The ASM compiler identification is GNU
+-- Found assembler: /usr/bin/arm-none-eabi-gcc
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/arm-none-eabi-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/arm-none-eabi-g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+Build type is Release
+-- Found Python3: /usr/bin/python3 (found version "3.11.2") found components: Interpreter 
+TinyUSB available at /home/devel/pico2/pico-sdk/lib/tinyusb/hw/bsp/rp2040; enabling build support for USB.
+BTstack available at /home/devel/pico2/pico-sdk/lib/btstack
+cyw43-driver available at /home/devel/pico2/pico-sdk/lib/cyw43-driver
+mbedtls available at /home/devel/pico2/pico-sdk/lib/mbedtls
+lwIP available at /home/devel/pico2/pico-sdk/lib/lwip
+-- Found Git: /usr/bin/git (found version "2.39.5") 
+fatal: No names found, cannot describe anything.
+CMake Warning at /home/devel/pico2/pico-sdk/src/rp2_common/pico_standard_link/CMakeLists.txt:51 (message):
+  Linker script /home/devel/pshell/misc/pshell_2040.ld does not KEEP the
+  .stack section - replace `*(.stack*)` with `KEEP(*(.stack*))`
+Call Stack (most recent call first):
+  /home/devel/pico2/pico-sdk/src/rp2_common/pico_standard_link/CMakeLists.txt:69 (pico_check_linker_script)
+  CMakeLists.txt:59 (pico_set_linker_script)
+
+
+CMake Warning at /home/devel/pico2/pico-sdk/src/rp2_common/pico_standard_link/CMakeLists.txt:55 (message):
+  Linker script /home/devel/pshell/misc/pshell_2040.ld does not KEEP the
+  .heap section - replace `*(.heap*)` with `KEEP(*(.heap*))`
+Call Stack (most recent call first):
+  /home/devel/pico2/pico-sdk/src/rp2_common/pico_standard_link/CMakeLists.txt:69 (pico_check_linker_script)
+  CMakeLists.txt:59 (pico_set_linker_script)
+
+
+CMake Warning at /home/devel/pico2/pico-sdk/src/rp2_common/pico_standard_link/CMakeLists.txt:59 (message):
+  Linker script /home/devel/pshell/misc/pshell_2040.ld is incompatible with
+  certain Pico SDK >2.1.1 features; setting PICO_CRT0_ALLOCATE_SPACERS=0 as a
+  workaround
+Call Stack (most recent call first):
+  /home/devel/pico2/pico-sdk/src/rp2_common/pico_standard_link/CMakeLists.txt:69 (pico_check_linker_script)
+  CMakeLists.txt:59 (pico_set_linker_script)
+
+
+Using picotool from /usr/local/bin/picotool
+-----------------------------------------------------
+-- CMake 3.25.1
+-- Build Release / PICO
+-- USB_CONSOLE 0, using UART
+-- building for pico, using flash file system
+-----------------------------------------------------
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/devel/pshell/build
+devel@pi4-50:~/pshell/build $ ls
+cc       CMakeCache.txt    CMakeDoxygenDefaults.cmake  cmake_install.cmake  disassembler  generated  lifting   Makefile  openjpeg              pico-sdk  pioasm-install  xymodem
+cir-buf  CMakeDoxyfile.in  CMakeFiles 
+devel@pi4-50:~/pshell/build $ ls -la
+-rw-r--r--  1 devel devel  499200 May 13 19:52 pshell.uf2
