@@ -1,0 +1,17 @@
+08/27/26
+
+These are results for what pin on raspberry pi 5 used with iUniker NVMe 
+power plug
+
+The 2-pin auxiliary power cable included with the iUniker NVMe HAT 
+connects to the 5V Power and Ground (GND) pins on the Raspberry Pi 5's 
+40-pin GPIO header.
+
+5V Power (+5V): Pin 2 or Pin 4
+
+Ground (GND): Pin 6, 9, 14, 20, 25, 30, 34, or 39 (Pin 6 or 14 are 
+commonly used next to the 5V pins
+
+Note: Double-check the polarity markings (silk screen) on your 
+specific iUniker NVMe expansion board before plugging the cable in to 
+avoid reversing 5V and Ground.
