@@ -1,0 +1,49 @@
+08/27/26
+
+devel@pi5-90:~ $ sudo fdisk -l
+
+Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
+Disk model: ACCLAMATOR SSD 512GB
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+devel@pi5-90:~ $ sudo fdisk /dev/nvme0n1
+
+Welcome to fdisk (util-linux 2.38.1).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+Device does not contain a recognized partition table.
+Created a new DOS (MBR) disklabel with disk identifier 0x1bef8267.
+
+Command (m for help): p
+Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
+Disk model: ACCLAMATOR SSD 512GB
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x1bef8267
+Command (m for help): n
+Partition type
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended (container for logical partitions)
+Select (default p): p
+Partition number (1-4, default 1): 
+First sector (2048-1000215215, default 2048): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-1000215215, default 1000215215): 
+
+Created a new partition 1 of type 'Linux' and of size 476.9 GiB.
+
+Command (m for help): p
+Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
+Disk model: ACCLAMATOR SSD 512GB
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x1bef8267
+
+Device         Boot Start        End    Sectors   Size Id Type
+/dev/nvme0n1p1       2048 1000215215 1000213168 476.9G 83 Linux

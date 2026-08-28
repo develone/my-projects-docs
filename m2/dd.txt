@@ -1,0 +1,15 @@
+08/27/26
+
+sudo dd if=/path/to/image.img of=/dev/nvme0n1 bs=64K status=progress conv=fsync
+Use code with caution.
+
+sudo dd if=/home/devel/Downloads/2025-11-24-raspios-bookworm-arm64.img of=/dev/nvme0n1 bs=64K status=progress conv=fsync
+
+6134235136 bytes (6.1 GB, 5.7 GiB) copied, 78 s, 78.6 MB/s6207569920 bytes (6.2 GB, 5.8 GiB) copied, 78.9184 s, 78.7 MB/s
+
+94720+0 records in
+94720+0 records out
+6207569920 bytes (6.2 GB, 5.8 GiB) copied, 80.7858 s, 76.8 MB/s
+Device         Boot   Start      End  Sectors  Size Id Type
+/dev/nvme0n1p1        16384  1064959  1048576  512M  c W95 FAT32 (LBA)
+/dev/nvme0n1p2      1064960 12124159 11059200  5.3G 83 Linux
